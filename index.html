@@ -269,111 +269,113 @@ L.control.locate({
   }
 }).addTo(map);
 
-map.on('locationfound', async function (e) {
-  const userLatLng = e.latlng;
+let popupContainer, filteredContainer, activeFilters = ['religious', 'nature', 'historical'];
+
+async function getFilteredContent(userLatLng, categories) {
   const avgSpeedKmph = 40;
-  const weatherApiKey = '4200fd9e8f75bb4b3d866dc03f596781'; // replace with your key
+  const weatherApiKey = '4200fd9e8f75bb4b3d866dc03f596781';
+  let html = '';
 
-  // Prepare a DOM element container for the popup
-  const container = document.createElement('div');
-  container.style.fontFamily = 'Arial, sans-serif';
-  container.style.fontSize = '14px';
-  container.style.color = '#333';
-container.style.background = 'white';
-container.style.border = '1px solid #ccc';
-container.style.borderRadius = '8px';
-container.style.boxShadow = '0 2px 8px rgba(0,0,0,0.3)';
-container.style.padding = '10px';
-container.style.maxWidth = '300px';
+  for (const loc of locations) {
+    if (!categories.includes(loc.category)) continue;
 
+    const latDiff = Math.abs(userLatLng.lat - loc.lat);
+    const lngDiff = Math.abs(userLatLng.lng - loc.lng);
+    const manhattanKm = ((latDiff + lngDiff) * 111).toFixed(2);
+    const estimatedTime = (manhattanKm / avgSpeedKmph).toFixed(2);
+    const gmapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${userLatLng.lat},${userLatLng.lng}&destination=${loc.lat},${loc.lng}`;
 
-  container.innerHTML = `
-    <div style="font-size: 16px; margin-bottom: 6px;">
-      <img src="https://cdn-icons-png.flaticon.com/512/684/684908.png" width="18" style="vertical-align: middle; margin-right: 6px;">
-      <strong>Your Current Location</strong>
-    </div>
-
-    <div style="margin-bottom: 10px;">
-      <strong>Filter:</strong><br>
-      <label><input type="checkbox" class="category-filter" value="religious" checked> Religious</label><br>
-      <label><input type="checkbox" class="category-filter" value="nature" checked> Nature</label><br>
-      <label><input type="checkbox" class="category-filter" value="historical" checked> Historical</label>
-    </div>
-
-    <div id="filtered-places" class="popup-scroll" style="max-height: 220px; overflow-y: auto; padding-right: 8px;">
-      Loading places...
-    </div>
-  `;
-// ? Stop propagation at container level
-L.DomEvent.disableClickPropagation(container);
-L.DomEvent.disableScrollPropagation(container);
-
-// ? Stop event propagation on all checkboxes
-container.querySelectorAll('input').forEach((input) => {
-  input.addEventListener('click', (e) => e.stopPropagation());
-  input.addEventListener('mousedown', (e) => e.stopPropagation());
-  input.addEventListener('dblclick', (e) => e.stopPropagation());
-});
-
-// ? Finally, open the popup
-L.popup().setLatLng(userLatLng).setContent(container).openOn(map);
-  // Add popup to map with the custom container
-  L.popup().setLatLng(userLatLng).setContent(container).openOn(map);
-
-  // Function to get filtered locations content
-  async function getFilteredContent(categories) {
-    let html = '';
-
-    for (const loc of locations) {
-      if (!categories.includes(loc.category)) continue;
-
-      const latDiff = Math.abs(userLatLng.lat - loc.lat);
-      const lngDiff = Math.abs(userLatLng.lng - loc.lng);
-      const manhattanKm = ((latDiff + lngDiff) * 111).toFixed(2);
-      const estimatedTime = (manhattanKm / avgSpeedKmph).toFixed(2);
-      const gmapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${userLatLng.lat},${userLatLng.lng}&destination=${loc.lat},${loc.lng}`;
-
-      let weatherInfo = 'Loading weather...';
-      try {
-        const res = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${loc.lat}&lon=${loc.lng}&units=metric&appid=${weatherApiKey}`);
-        const data = await res.json();
-        const temp = data.main?.temp ?? 'N/A';
-        const desc = data.weather?.[0]?.description ?? 'N/A';
-        weatherInfo = `${temp}&deg;C, ${desc}`;
-      } catch {
-        weatherInfo = 'Could not load weather';
-      }
-
-      html += `
-        <div style="margin-bottom: 12px; padding: 8px; border-bottom: 1px solid #ccc; max-width: 300px; max-height: 200px; overflow: auto;">
-  <strong>${loc.name}</strong><br>
-  Approximate Distance: <b>${manhattanKm} km</b><br>
-  Estimated Time: <b>${estimatedTime} hrs</b><br>
-  Weather: <b>${weatherInfo}</b><br>
-  <a href="${gmapsUrl}" target="_blank" style="color: #007bff;">Open in Google Maps</a>
-</div>
-
-      `;
+    let weatherInfo = 'Loading weather...';
+    try {
+      const res = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${loc.lat}&lon=${loc.lng}&units=metric&appid=${weatherApiKey}`);
+      const data = await res.json();
+      const temp = data.main?.temp ?? 'N/A';
+      const desc = data.weather?.[0]?.description ?? 'N/A';
+      weatherInfo = `${temp}&deg;C, ${desc}`;
+    } catch {
+      weatherInfo = 'Could not load weather';
     }
 
-    return html || `<div style="color: gray;">No places match the selected filters.</div>`;
+    html += `
+      <div style="margin-bottom: 12px; padding: 8px; border-bottom: 1px solid #ccc;">
+        <strong>${loc.name}</strong><br>
+        Approximate Distance: <b>${manhattanKm} km</b><br>
+        Estimated Time: <b>${estimatedTime} hrs</b><br>
+        Weather: <b>${weatherInfo}</b><br>
+        <a href="${gmapsUrl}" target="_blank" style="color: #007bff;">Open in Google Maps</a>
+      </div>
+    `;
   }
 
-  // Initial load
-  const filteredContainer = container.querySelector('#filtered-places');
-  filteredContainer.innerHTML = await getFilteredContent(['religious', 'nature', 'historical']);
+  return html || `<div style="color: gray;">No places match the selected filters.</div>`;
+}
 
-  // Attach filter event listeners
-  container.querySelectorAll('.category-filter').forEach(checkbox => {
-    checkbox.addEventListener('change', async () => {
-      const selected = Array.from(container.querySelectorAll('.category-filter'))
-        .filter(cb => cb.checked)
-        .map(cb => cb.value);
+// Initial one-time popup creation
+let popupInitialized = false;
+let userLocation = null;
 
-      filteredContainer.innerHTML = 'Updating...';
-      filteredContainer.innerHTML = await getFilteredContent(selected);
+map.on('locationfound', async function (e) {
+  userLocation = e.latlng;
+
+  if (!popupInitialized) {
+    popupInitialized = true;
+
+    popupContainer = document.createElement('div');
+    popupContainer.style.fontFamily = 'Arial, sans-serif';
+    popupContainer.style.fontSize = '14px';
+    popupContainer.style.color = '#333';
+    popupContainer.style.background = 'white';
+    popupContainer.style.border = '1px solid #ccc';
+    popupContainer.style.borderRadius = '8px';
+    popupContainer.style.boxShadow = '0 2px 8px rgba(0,0,0,0.3)';
+    popupContainer.style.padding = '10px';
+    popupContainer.style.maxWidth = '300px';
+
+    popupContainer.innerHTML = `
+      <div style="font-size: 16px; margin-bottom: 6px;">
+        <img src="https://cdn-icons-png.flaticon.com/512/684/684908.png" width="18" style="vertical-align: middle; margin-right: 6px;">
+        <strong>Your Current Location</strong>
+      </div>
+
+      <div style="margin-bottom: 10px;">
+        <strong>Filter:</strong><br>
+        <label><input type="checkbox" class="category-filter" value="religious" checked> Religious</label><br>
+        <label><input type="checkbox" class="category-filter" value="nature" checked> Nature</label><br>
+        <label><input type="checkbox" class="category-filter" value="historical" checked> Historical</label>
+      </div>
+
+      <div id="filtered-places" class="popup-scroll" style="max-height: 220px; overflow-y: auto; padding-right: 8px;">
+        Loading places...
+      </div>
+    `;
+
+    L.DomEvent.disableClickPropagation(popupContainer);
+    L.DomEvent.disableScrollPropagation(popupContainer);
+
+    popupContainer.querySelectorAll('input').forEach((input) => {
+      input.addEventListener('click', (e) => e.stopPropagation());
+      input.addEventListener('mousedown', (e) => e.stopPropagation());
+      input.addEventListener('dblclick', (e) => e.stopPropagation());
+
+      input.addEventListener('change', async () => {
+        activeFilters = Array.from(popupContainer.querySelectorAll('.category-filter'))
+          .filter(cb => cb.checked)
+          .map(cb => cb.value);
+
+        filteredContainer.innerHTML = 'Updating...';
+        filteredContainer.innerHTML = await getFilteredContent(userLocation, activeFilters);
+      });
     });
-  });
+
+    L.popup().setLatLng(userLocation).setContent(popupContainer).openOn(map);
+    filteredContainer = popupContainer.querySelector('#filtered-places');
+    filteredContainer.innerHTML = await getFilteredContent(userLocation, activeFilters);
+  } else {
+    // Location updated: refresh just the content
+    if (filteredContainer && popupContainer) {
+      filteredContainer.innerHTML = await getFilteredContent(userLocation, activeFilters);
+    }
+  }
 });
 
 
