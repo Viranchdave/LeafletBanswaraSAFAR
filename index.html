@@ -21,6 +21,8 @@
       height: 100%;
       margin: 0;
       padding: 0;
+      overflow: hidden; /* Prevents scroll-based artifacts */
+      background-color: #ffffff; /* Or match your app theme */
     }
 
     #map {
@@ -213,6 +215,9 @@ const map = L.map('map', {
   center: [23.546, 74.435],
   zoom: 10,
   layers: [osm] // Default layer
+  setTimeout(() => {
+    map.invalidateSize();
+}, 500);
 });
 
 // Add custom base map switcher with symbols
