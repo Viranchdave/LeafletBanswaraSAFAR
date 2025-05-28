@@ -215,9 +215,6 @@ const map = L.map('map', {
   center: [23.546, 74.435],
   zoom: 10,
   layers: [osm] // Default layer
-  setTimeout(() => {
-    map.invalidateSize();
-}, 500);
 });
 
 // Add custom base map switcher with symbols
