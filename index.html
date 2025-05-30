@@ -40,11 +40,13 @@
       font-family: Arial, sans-serif;
     }
 
- #globe-popup-container {
+ /* Default styles (for larger screens - desktop) */
+#globe-popup-container {
   position: absolute;
-  top: 84px;
-  left: 23px;
-  z-index: 999;
+  top: 10px;   /* Adjusted to be closer to the top */
+  right: 10px; /* Positioned on the right for desktop */
+  left: auto;  /* Ensure 'left' doesn't interfere */
+  z-index: 1001; /* Higher z-index to be above other map controls */
 }
 
 #globe-icon {
@@ -54,19 +56,63 @@
   padding: 5px;
   border-radius: 50%;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  color: #333; /* Ensure icon color is visible */
 }
 
 #translate-popup {
   display: none;
   position: absolute;
-  top: 60px;
-  left: 0;
+  top: 40px; /* Positioned below the globe icon (24px icon + 5px padding top/bottom + some margin) */
+  right: 0;  /* Aligned with the right edge of its parent container (#globe-popup-container) */
+  left: auto; /* Ensure 'left' doesn't interfere */
   background: white;
   padding: 6px;
   border-radius: 6px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  width: 200px; /* Default width for desktop */
+  max-width: 200px; /* Ensure it doesn't get too wide on very large screens */
+  box-sizing: border-box; /* Include padding/border in width calculation */
 }
 
+
+/* Media query for smaller screens (e.g., mobile devices) */
+@media (max-width: 768px) {
+  #globe-popup-container {
+    top: 5px;   /* Slightly higher on smaller screens */
+    right: 5px; /* Slightly closer to the right edge */
+  }
+
+  #globe-icon {
+    font-size: 22px; /* Slightly smaller icon on mobile */
+    padding: 4px;    /* Slightly less padding */
+  }
+
+  #translate-popup {
+    top: 35px;       /* Adjusted position below the slightly smaller globe icon */
+    right: 0;        /* Still aligned to the right of its parent */
+    width: 150px;    /* Smaller width for mobile */
+    max-width: 60vw; /* Responsive max-width relative to viewport width */
+    padding: 4px;    /* Slightly less padding */
+  }
+}
+
+/* Optional: Even smaller screens if needed (e.g., very small phones) */
+@media (max-width: 480px) {
+  #globe-popup-container {
+    top: 3px;
+    right: 3px;
+  }
+  #globe-icon {
+    font-size: 20px;
+    padding: 3px;
+  }
+  #translate-popup {
+    top: 30px;
+    width: 120px;
+    max-width: 70vw; /* Might want to increase max-width slightly here */
+    padding: 3px;
+  }
+}
 
     .legend {
       background: white;
