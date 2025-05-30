@@ -43,8 +43,8 @@
 /* Default styles for Leaflet's built-in controls (e.g., zoom, locate) on larger screens */
 .leaflet-top.leaflet-left {
   position: absolute;
-  top: 44px;  /* Standard position from previous discussions. Adjust if your toggle button is higher/lower */
-  left: 10px;
+  top: 55px;  /* Standard position from previous discussions. Adjust if your toggle button is higher/lower */
+  left: 20px;
   z-index: 1001; /* Ensure these controls are on top */
   display: flex; /* Make it a flex container to stack controls */
   flex-direction: column; /* Stack zoom/locate controls vertically */
@@ -68,8 +68,8 @@
 /* Leaflet's built-in controls (zoom, locate) container */
 .leaflet-top.leaflet-left {
   position: absolute;
-  top: 60px; /* Position below #toggle-button (10px top + ~40px height of #toggle-button + 10px gap) */
-  left: 10px; /* Align with #toggle-button */
+  top: 80px; /* Position below #toggle-button (10px top + ~40px height of #toggle-button + 10px gap) */
+  left: 20px; /* Align with #toggle-button */
   z-index: 1001;
   display: flex;
   flex-direction: column; /* Stack controls vertically */
@@ -83,8 +83,8 @@
   position: absolute;
   /* This 'top' value needs to be precise.
      Calculate it as: (top of .leaflet-top.leaflet-left) + (height of .leaflet-top.leaflet-left) + desired_gap */
-  top: 215px; /* **Desktop estimate - Adjust using browser inspector!** */
-  left: 40px; /* Align with other top-left controls */
+  top: 350px; /* **Desktop estimate - Adjust using browser inspector!** */
+  left: 60px; /* Align with other top-left controls */
   z-index: 1001;
   right: auto;
   bottom: auto;
@@ -134,7 +134,7 @@
   /* Globe popup container on mobile */
   #globe-popup-container {
     /* **Mobile estimate - Adjust using browser inspector!** */
-    top: 160px; /* Calculate: (mobile .leaflet-top.leaflet-left top) + (mobile .leaflet-top.leaflet-left height) + desired_gap */
+    top: 100px; /* Calculate: (mobile .leaflet-top.leaflet-left top) + (mobile .leaflet-top.leaflet-left height) + desired_gap */
     left: 40px;
   }
 
@@ -161,8 +161,8 @@
 
   /* Leaflet controls on very small screens */
   .leaflet-top.leaflet-left {
-    top: 350px;
-    left: 60px;
+    top: 380px;
+    left: 70px;
     gap: 4px;
   }
 
