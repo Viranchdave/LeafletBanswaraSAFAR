@@ -84,7 +84,7 @@
   /* This 'top' value needs to be precise.
      Calculate it as: (top of .leaflet-top.leaflet-left) + (height of .leaflet-top.leaflet-left) + desired_gap */
   top: 215px; /* **Desktop estimate - Adjust using browser inspector!** */
-  left: 60px; /* Align with other top-left controls */
+  left: 40px; /* Align with other top-left controls */
   z-index: 1001;
   right: auto;
   bottom: auto;
@@ -126,7 +126,7 @@
 
   /* Leaflet controls on mobile */
   .leaflet-top.leaflet-left {
-    top: 150px; /* Adjust based on new #toggle-button position + height + gap */
+    top: 350px; /* Adjust based on new #toggle-button position + height + gap */
     left: 60px;
     gap: 8px; /* Slightly less gap on mobile */
   }
@@ -134,8 +134,8 @@
   /* Globe popup container on mobile */
   #globe-popup-container {
     /* **Mobile estimate - Adjust using browser inspector!** */
-    top: 260px; /* Calculate: (mobile .leaflet-top.leaflet-left top) + (mobile .leaflet-top.leaflet-left height) + desired_gap */
-    left: 60px;
+    top: 160px; /* Calculate: (mobile .leaflet-top.leaflet-left top) + (mobile .leaflet-top.leaflet-left height) + desired_gap */
+    left: 40px;
   }
 
   #globe-icon {
@@ -161,7 +161,7 @@
 
   /* Leaflet controls on very small screens */
   .leaflet-top.leaflet-left {
-    top: 150px;
+    top: 350px;
     left: 60px;
     gap: 4px;
   }
@@ -169,8 +169,8 @@
   /* Globe popup container on very small screens */
   #globe-popup-container {
     /* **Very small mobile estimate - Adjust using browser inspector!** */
-    top: 235px; /* Calculate: (very small mobile .leaflet-top.leaflet-left top) + (its height) + desired_gap */
-    left: 60px;
+    top: 150px; /* Calculate: (very small mobile .leaflet-top.leaflet-left top) + (its height) + desired_gap */
+    left: 40px;
   }
 
   #globe-icon {
