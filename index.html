@@ -574,21 +574,72 @@ L.popup().setLatLng(userLatLng).setContent(container).openOn(map);
     return html || `<div style="color: gray;">No places match the selected filters.</div>`;
   }
 
-  // Initial load
-  const filteredContainer = container.querySelector('#filtered-places');
-  filteredContainer.innerHTML = await getFilteredContent(['religious', 'nature', 'historical']);
+  // Initial one-time popup creation
+let popupInitialized = false;
+let userLocation = null;
 
-  // Attach filter event listeners
-  container.querySelectorAll('.category-filter').forEach(checkbox => {
-    checkbox.addEventListener('change', async () => {
-      const selected = Array.from(container.querySelectorAll('.category-filter'))
-        .filter(cb => cb.checked)
-        .map(cb => cb.value);
+map.on('locationfound', async function (e) {
+  userLocation = e.latlng;
 
-      filteredContainer.innerHTML = 'Updating...';
-      filteredContainer.innerHTML = await getFilteredContent(selected);
+  if (!popupInitialized) {
+    popupInitialized = true;
+
+    popupContainer = document.createElement('div');
+    popupContainer.style.fontFamily = 'Arial, sans-serif';
+    popupContainer.style.fontSize = '14px';
+    popupContainer.style.color = '#333';
+    popupContainer.style.background = 'white';
+    popupContainer.style.border = '1px solid #ccc';
+    popupContainer.style.borderRadius = '8px';
+    popupContainer.style.boxShadow = '0 2px 8px rgba(0,0,0,0.3)';
+    popupContainer.style.padding = '10px';
+    popupContainer.style.maxWidth = '300px';
+
+    popupContainer.innerHTML = `
+      <div style="font-size: 16px; margin-bottom: 6px;">
+        <img src="https://cdn-icons-png.flaticon.com/512/684/684908.png" width="18" style="vertical-align: middle; margin-right: 6px;">
+        <strong>Your Current Location</strong>
+      </div>
+
+      <div style="margin-bottom: 10px;">
+        <strong>Filter:</strong><br>
+        <label><input type="checkbox" class="category-filter" value="religious" checked> Religious</label><br>
+        <label><input type="checkbox" class="category-filter" value="nature" checked> Nature</label><br>
+        <label><input type="checkbox" class="category-filter" value="historical" checked> Historical</label>
+      </div>
+
+      <div id="filtered-places" class="popup-scroll" style="max-height: 220px; overflow-y: auto; padding-right: 8px;">
+        Loading places...
+      </div>
+    `;
+
+    L.DomEvent.disableClickPropagation(popupContainer);
+    L.DomEvent.disableScrollPropagation(popupContainer);
+
+    popupContainer.querySelectorAll('input').forEach((input) => {
+      input.addEventListener('click', (e) => e.stopPropagation());
+      input.addEventListener('mousedown', (e) => e.stopPropagation());
+      input.addEventListener('dblclick', (e) => e.stopPropagation());
+
+      input.addEventListener('change', async () => {
+        activeFilters = Array.from(popupContainer.querySelectorAll('.category-filter'))
+          .filter(cb => cb.checked)
+          .map(cb => cb.value);
+
+        filteredContainer.innerHTML = 'Updating...';
+        filteredContainer.innerHTML = await getFilteredContent(userLocation, activeFilters);
+      });
     });
-  });
+
+    L.popup().setLatLng(userLocation).setContent(popupContainer).openOn(map);
+    filteredContainer = popupContainer.querySelector('#filtered-places');
+    filteredContainer.innerHTML = await getFilteredContent(userLocation, activeFilters);
+  } else {
+    // Location updated: refresh just the content
+    if (filteredContainer && popupContainer) {
+      filteredContainer.innerHTML = await getFilteredContent(userLocation, activeFilters);
+    }
+  }
 });
 
 
