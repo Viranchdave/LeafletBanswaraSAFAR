@@ -3,8 +3,7 @@
 <head>
   <title>GeolocateBanswaraTourism</title>
   <meta charset="utf-8" />
- <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
  <!-- Leaflet CSS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
@@ -21,14 +20,10 @@
     html, body {
       height: 100%;
       margin: 0;
-      padding: 0;
-      overflow: hidden; /* Prevents scroll-based artifacts */
-      background-color: #ffffff; /* Or match your app theme */
     }
 
     #map {
-      height: 100vh; /* Viewport height unit */
-      width: 100% 
+      height: 100%;
     }
 
     #toggle-button {
@@ -45,17 +40,33 @@
       font-family: Arial, sans-serif;
     }
 
-    #google_translate_element {
-      position: absolute;
-      bottom: 32px;
-      left: 10px;
-      z-index: 999;
-      background: white;
-      padding: 4px 8px;
-      border-radius: 5px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-      font-size: 14px;
-    }
+ #globe-popup-container {
+  position: absolute;
+  top: 167px;
+  left: 23px;
+  z-index: 999;
+}
+
+#globe-icon {
+  font-size: 24px;
+  cursor: pointer;
+  background: white;
+  padding: 5px;
+  border-radius: 50%;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+#translate-popup {
+  display: none;
+  position: absolute;
+  top: 60px;
+  left: 0;
+  background: white;
+  padding: 6px;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
 
     .legend {
       background: white;
@@ -80,9 +91,10 @@
       margin-right: 6px;
       border-radius: 50%;
     }
-.leaflet-top.leaflet-left {position: absolute !important;
-  top: 60px;              /* Keeps it slightly down from the top */
-  left: 4.2%;              /* Move to the center */
+.leaflet-top.leaflet-left {
+  top: 44px;              /* Keeps it slightly down from the top */
+  left: 2.5%;              /* Move to the center */
+  transform: translateX(-50%); /* Center-align */
   display: flex;
   flex-direction: column; /* Stack buttons vertically */
   align-items: center;    /* Optional: makes it neater */
@@ -100,10 +112,7 @@
   font-family: Arial, sans-serif;
 }
 
-<!-- Leaflet LocateControl CSS -->
-<link rel="stylesheet" href="https://unpkg.com/leaflet.locatecontrol/dist/L.Control.Locate.min.css" />
-<!-- Leaflet LocateControl JS -->
-<script src="https://unpkg.com/leaflet.locatecontrol/dist/L.Control.Locate.min.js"></script>
+
 
 .leaflet-popup-content {
   font-family: Arial, sans-serif;
@@ -153,8 +162,11 @@
     border-radius: 8px;
     box-shadow: 0 2px 6px rgba(0,0,0,0.2);
     display: flex;
+flex-direction: column; /* ?? key change for vertical layout */
     gap: 6px;
     align-items: center;
+ z-index: 1000; /* ? Add this */
+    pointer-events: auto; /* ? Ensure it can be interacted with */
   }
 
   .basemap-switcher button {
@@ -162,11 +174,13 @@
     border: none;
     cursor: pointer;
     padding: 4px;
+pointer-events: auto; /* ? Force interactivity */
   }
 
   .basemap-switcher img {
     width: 24px;
     height: 24px;
+ pointer-events: none; /* ? Let button handle the click, not the image */
   }
 
   .basemap-switcher button:hover {
@@ -184,8 +198,12 @@
 <body>
 
 <!-- Google Translate Dropdown -->
-<div id="google_translate_element"></div>
-
+<div id="globe-popup-container">
+  <i class="fas fa-globe" id="globe-icon" title="Select Language"></i>
+  <div id="translate-popup">
+    <div id="google_translate_element"></div>
+  </div>
+</div>
 
 <div id="map">
   <div class="map-title">Banswara Tourism</div>
@@ -209,6 +227,7 @@ const cartoLight = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/
 const cartoDark = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
   attribution: '&copy CartoDB'
 });
+
 
 
 // Initialize map
@@ -237,29 +256,28 @@ baseMapControl.onAdd = function () {
 
 baseMapControl.addTo(map);
 
-// Layer switching logic
-document.addEventListener('click', (e) => {
-  const button = e.target.closest('button[data-layer]');
-  if (!button) return;
+// Layer dictionary
+const baseLayers = {
+  osm,
+  esri,
+  cartoLight,
+  cartoDark
+};
 
-  const selected = button.dataset.layer;
-  let layerToAdd;
-
-  switch (selected) {
-    case 'osm': layerToAdd = osm; break;
-    case 'esri': layerToAdd = esri; break;
-    case 'cartoLight': layerToAdd = cartoLight; break;
-    case 'cartoDark': layerToAdd = cartoDark; break;
-  }
-
-  map.eachLayer(layer => {
-    if (layer instanceof L.TileLayer) map.removeLayer(layer);
+// Enable switching basemaps
+map.whenReady(() => {
+  document.querySelectorAll('.basemap-switcher button').forEach(button => {
+    button.addEventListener('click', () => {
+      const layerName = button.getAttribute('data-layer');
+      
+      // Remove all base layers
+      Object.values(baseLayers).forEach(layer => map.removeLayer(layer));
+      
+      // Add selected layer
+      baseLayers[layerName].addTo(map);
+    });
   });
-
-  layerToAdd.addTo(map);
 });
-
-
 
 L.control.locate({
   position: 'topleft',
@@ -274,113 +292,111 @@ L.control.locate({
   }
 }).addTo(map);
 
-let popupContainer, filteredContainer, activeFilters = ['religious', 'nature', 'historical'];
-
-async function getFilteredContent(userLatLng, categories) {
-  const avgSpeedKmph = 40;
-  const weatherApiKey = '4200fd9e8f75bb4b3d866dc03f596781';
-  let html = '';
-
-  for (const loc of locations) {
-    if (!categories.includes(loc.category)) continue;
-
-    const latDiff = Math.abs(userLatLng.lat - loc.lat);
-    const lngDiff = Math.abs(userLatLng.lng - loc.lng);
-    const manhattanKm = ((latDiff + lngDiff) * 111).toFixed(2);
-    const estimatedTime = (manhattanKm / avgSpeedKmph).toFixed(2);
-    const gmapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${userLatLng.lat},${userLatLng.lng}&destination=${loc.lat},${loc.lng}`;
-
-    let weatherInfo = 'Loading weather...';
-    try {
-      const res = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${loc.lat}&lon=${loc.lng}&units=metric&appid=${weatherApiKey}`);
-      const data = await res.json();
-      const temp = data.main?.temp ?? 'N/A';
-      const desc = data.weather?.[0]?.description ?? 'N/A';
-      weatherInfo = `${temp}&deg;C, ${desc}`;
-    } catch {
-      weatherInfo = 'Could not load weather';
-    }
-
-    html += `
-      <div style="margin-bottom: 12px; padding: 8px; border-bottom: 1px solid #ccc;">
-        <strong>${loc.name}</strong><br>
-        Approximate Distance: <b>${manhattanKm} km</b><br>
-        Estimated Time: <b>${estimatedTime} hrs</b><br>
-        Weather: <b>${weatherInfo}</b><br>
-        <a href="${gmapsUrl}" target="_blank" style="color: #007bff;">Open in Google Maps</a>
-      </div>
-    `;
-  }
-
-  return html || `<div style="color: gray;">No places match the selected filters.</div>`;
-}
-
-// Initial one-time popup creation
-let popupInitialized = false;
-let userLocation = null;
-
 map.on('locationfound', async function (e) {
-  userLocation = e.latlng;
+  const userLatLng = e.latlng;
+  const avgSpeedKmph = 40;
+  const weatherApiKey = '4200fd9e8f75bb4b3d866dc03f596781'; // replace with your key
 
-  if (!popupInitialized) {
-    popupInitialized = true;
+  // Prepare a DOM element container for the popup
+  const container = document.createElement('div');
+  container.style.fontFamily = 'Arial, sans-serif';
+  container.style.fontSize = '14px';
+  container.style.color = '#333';
+container.style.background = 'white';
+container.style.border = '1px solid #ccc';
+container.style.borderRadius = '8px';
+container.style.boxShadow = '0 2px 8px rgba(0,0,0,0.3)';
+container.style.padding = '10px';
+container.style.maxWidth = '300px';
 
-    popupContainer = document.createElement('div');
-    popupContainer.style.fontFamily = 'Arial, sans-serif';
-    popupContainer.style.fontSize = '14px';
-    popupContainer.style.color = '#333';
-    popupContainer.style.background = 'white';
-    popupContainer.style.border = '1px solid #ccc';
-    popupContainer.style.borderRadius = '8px';
-    popupContainer.style.boxShadow = '0 2px 8px rgba(0,0,0,0.3)';
-    popupContainer.style.padding = '10px';
-    popupContainer.style.maxWidth = '300px';
 
-    popupContainer.innerHTML = `
-      <div style="font-size: 16px; margin-bottom: 6px;">
-        <img src="https://cdn-icons-png.flaticon.com/512/684/684908.png" width="18" style="vertical-align: middle; margin-right: 6px;">
-        <strong>Your Current Location</strong>
-      </div>
+  container.innerHTML = `
+    <div style="font-size: 16px; margin-bottom: 6px;">
+      <img src="https://cdn-icons-png.flaticon.com/512/684/684908.png" width="18" style="vertical-align: middle; margin-right: 6px;">
+      <strong>Your Current Location</strong>
+    </div>
 
-      <div style="margin-bottom: 10px;">
-        <strong>Filter:</strong><br>
-        <label><input type="checkbox" class="category-filter" value="religious" checked> Religious</label><br>
-        <label><input type="checkbox" class="category-filter" value="nature" checked> Nature</label><br>
-        <label><input type="checkbox" class="category-filter" value="historical" checked> Historical</label>
-      </div>
+    <div style="margin-bottom: 10px;">
+      <strong>Filter:</strong><br>
+      <label><input type="checkbox" class="category-filter" value="religious" checked> Religious</label><br>
+      <label><input type="checkbox" class="category-filter" value="nature" checked> Nature</label><br>
+      <label><input type="checkbox" class="category-filter" value="historical" checked> Historical</label>
+    </div>
 
-      <div id="filtered-places" class="popup-scroll" style="max-height: 220px; overflow-y: auto; padding-right: 8px;">
-        Loading places...
-      </div>
-    `;
+    <div id="filtered-places" class="popup-scroll" style="max-height: 220px; overflow-y: auto; padding-right: 8px;">
+      Loading places...
+    </div>
+  `;
+// ? Stop propagation at container level
+L.DomEvent.disableClickPropagation(container);
+L.DomEvent.disableScrollPropagation(container);
 
-    L.DomEvent.disableClickPropagation(popupContainer);
-    L.DomEvent.disableScrollPropagation(popupContainer);
+// ? Stop event propagation on all checkboxes
+container.querySelectorAll('input').forEach((input) => {
+  input.addEventListener('click', (e) => e.stopPropagation());
+  input.addEventListener('mousedown', (e) => e.stopPropagation());
+  input.addEventListener('dblclick', (e) => e.stopPropagation());
+});
 
-    popupContainer.querySelectorAll('input').forEach((input) => {
-      input.addEventListener('click', (e) => e.stopPropagation());
-      input.addEventListener('mousedown', (e) => e.stopPropagation());
-      input.addEventListener('dblclick', (e) => e.stopPropagation());
+// ? Finally, open the popup
+L.popup().setLatLng(userLatLng).setContent(container).openOn(map);
+  // Add popup to map with the custom container
+  L.popup().setLatLng(userLatLng).setContent(container).openOn(map);
 
-      input.addEventListener('change', async () => {
-        activeFilters = Array.from(popupContainer.querySelectorAll('.category-filter'))
-          .filter(cb => cb.checked)
-          .map(cb => cb.value);
+  // Function to get filtered locations content
+  async function getFilteredContent(categories) {
+    let html = '';
 
-        filteredContainer.innerHTML = 'Updating...';
-        filteredContainer.innerHTML = await getFilteredContent(userLocation, activeFilters);
-      });
-    });
+    for (const loc of locations) {
+      if (!categories.includes(loc.category)) continue;
 
-    L.popup().setLatLng(userLocation).setContent(popupContainer).openOn(map);
-    filteredContainer = popupContainer.querySelector('#filtered-places');
-    filteredContainer.innerHTML = await getFilteredContent(userLocation, activeFilters);
-  } else {
-    // Location updated: refresh just the content
-    if (filteredContainer && popupContainer) {
-      filteredContainer.innerHTML = await getFilteredContent(userLocation, activeFilters);
+      const latDiff = Math.abs(userLatLng.lat - loc.lat);
+      const lngDiff = Math.abs(userLatLng.lng - loc.lng);
+      const manhattanKm = ((latDiff + lngDiff) * 111).toFixed(2);
+      const estimatedTime = (manhattanKm / avgSpeedKmph).toFixed(2);
+      const gmapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${userLatLng.lat},${userLatLng.lng}&destination=${loc.lat},${loc.lng}`;
+
+      let weatherInfo = 'Loading weather...';
+      try {
+        const res = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${loc.lat}&lon=${loc.lng}&units=metric&appid=${weatherApiKey}`);
+        const data = await res.json();
+        const temp = data.main?.temp ?? 'N/A';
+        const desc = data.weather?.[0]?.description ?? 'N/A';
+        weatherInfo = `${temp}&deg;C, ${desc}`;
+      } catch {
+        weatherInfo = 'Could not load weather';
+      }
+
+      html += `
+        <div style="margin-bottom: 12px; padding: 8px; border-bottom: 1px solid #ccc; max-width: 300px; max-height: 200px; overflow: auto;">
+  <strong>${loc.name}</strong><br>
+  Approximate Distance: <b>${manhattanKm} km</b><br>
+  Estimated Time: <b>${estimatedTime} hrs</b><br>
+  Weather: <b>${weatherInfo}</b><br>
+  <a href="${gmapsUrl}" target="_blank" style="color: #007bff;">Open in Google Maps</a>
+</div>
+
+      `;
     }
+
+    return html || `<div style="color: gray;">No places match the selected filters.</div>`;
   }
+
+  // Initial load
+  const filteredContainer = container.querySelector('#filtered-places');
+  filteredContainer.innerHTML = await getFilteredContent(['religious', 'nature', 'historical']);
+
+  // Attach filter event listeners
+  container.querySelectorAll('.category-filter').forEach(checkbox => {
+    checkbox.addEventListener('change', async () => {
+      const selected = Array.from(container.querySelectorAll('.category-filter'))
+        .filter(cb => cb.checked)
+        .map(cb => cb.value);
+
+      filteredContainer.innerHTML = 'Updating...';
+      filteredContainer.innerHTML = await getFilteredContent(selected);
+    });
+  });
 });
 
 
@@ -401,7 +417,7 @@ map.on('locationfound', async function (e) {
     fillOpacity: 0.1
   };
 
-var titleControl = L.control({ position: 'bottomright' });
+var titleControl = L.control({ position: 'bottomleft' });
 
 titleControl.onAdd = function (map) {
   var div = L.DomUtil.create('div', 'map-title');
@@ -570,7 +586,7 @@ const locations = [
     lat: 23.55421389,
     lng: 74.46954444,
     category: "religious",
-    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Natural_Waterfall.jpg/640px-Natural_Waterfall.jpg",
+    image: "https://ik.imagekit.io/kfyvf110y/1747914481832.jpg?updatedAt=1748100966183",
     description: "Located in the vicinity of Banswara city is the Madareshwar temple which amalgamates both faith & nature as it is located on a plateau where several streams flow downward. Here there is a cave in which water drips on the Shivlinga.",
     moreInfo: "https://en.wikipedia.org/wiki/Jholla_Waterfall"
   },
@@ -602,7 +618,7 @@ const locations = [
     moreInfo: "https://en.wikipedia.org/wiki/Jholla_Waterfall"
   },
 {
-    name: "Siddi Vinayak Temple",
+    name: "Siddhi Vinayak Temple",
     lat: 23.5625,
     lng: 74.325,
     category: "religious",
@@ -16605,6 +16621,7 @@ filterControl.addTo(map);
   map.fitBounds(boundaryLayer.getBounds());
 </script>
 
+
 <!-- Google Translate Script -->
 <script type="text/javascript">
   function googleTranslateElementInit() {
@@ -16625,7 +16642,43 @@ filterControl.addTo(map);
 ipt"
   src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit">
 </script>
+<script type="text/javascript">
+  function googleTranslateElementInit() {
+    new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
+  }
+
+  document.querySelector('#globe-translate i').addEventListener('click', function() {
+    const translateElement = document.getElementById('google_translate_element');
+    translateElement.style.display = translateElement.style.display === 'none' ? 'block' : 'none';
+  });
+</script>
+
+<script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+<script type="text/javascript">
+  function googleTranslateElementInit() {
+    new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    const globeIcon = document.getElementById('globe-icon');
+    const popup = document.getElementById('translate-popup');
+
+    globeIcon.addEventListener('click', () => {
+      popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
+    });
+
+    // Optional: Hide popup when clicking outside
+    document.addEventListener('click', function (e) {
+      if (!document.getElementById('globe-popup-container').contains(e.target)) {
+        popup.style.display = 'none';
+      }
+    });
+  });
+</script>
+
+<script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
 
 </body>
 </html>
-
