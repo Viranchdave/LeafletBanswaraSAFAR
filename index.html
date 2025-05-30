@@ -91,16 +91,23 @@
       margin-right: 6px;
       border-radius: 50%;
     }
-.leaflet-top.leaflet-left {
-  top: 74px;              /* Keeps it slightly down from the top */
-  left: 8.8%;              /* Move to the center */
-  display: flex;
-  flex-direction: column; /* Stack buttons vertically */
-  align-items: center;    /* Optional: makes it neater */
- width: 24px;
-    height: 24px;
-}
+ .leaflet-top.leaflet-left {
+      top: 44px; /* Keeps it slightly down from the top */
+      left: 10px; /* Aligned to the left */
+      transform: none; /* REMOVED: No longer needed for centering and was problematic */
+      width: auto;     /* REMOVED: restrictive fixed width */
+      height: auto;    /* REMOVED: restrictive fixed height */
+      display: block;  /* Ensures correct stacking of controls */
+      align-items: unset; /* Ensures correct stacking of controls */
+    }
 
+    /* Media query for smaller screens: Adjust top position of leaflet controls */
+    @media (max-width: 768px) {
+        .leaflet-top.leaflet-left {
+            top: 70px; /* Adjust if your header/title takes more space on mobile */
+            left: 5px;
+        }
+    }
 
 .map-title {
   background: White;
