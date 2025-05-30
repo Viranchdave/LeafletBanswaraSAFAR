@@ -3,18 +3,37 @@
 <head>
   <title>GeolocateBanswaraTourism</title>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+ <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
  <!-- Leaflet CSS -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <link rel="stylesheet" 
+
+href="https://unpkg.com/leaflet/dist/leaflet.css" 
+
+/>
   <!-- LocateControl CSS -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet.locatecontrol/dist/L.Control.Locate.min.css" />
+  <link rel="stylesheet" 
+
+href="https://unpkg.com/leaflet.locatecontrol/dist
+
+/L.Control.Locate.min.css" />
   <!-- FontAwesome CSS (for the icon!) -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" 
+
+href="https://cdnjs.cloudflare.com/ajax/libs/font-
+
+awesome/6.5.0/css/all.min.css" />
 
 <!-- Routing Machine -->
-<link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.css" />
-<script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.min.js"></script>
+<link rel="stylesheet" 
+
+href="https://unpkg.com/leaflet-routing-
+
+machine/dist/leaflet-routing-machine.css" />
+<script src="https://unpkg.com/leaflet-routing-
+
+machine/dist/leaflet-routing-
+
+machine.min.js"></script>
 
   <style>
     html, body {
@@ -40,16 +59,32 @@
       font-family: Arial, sans-serif;
     }
 
-/* Default styles for Leaflet's built-in controls (e.g., zoom, locate) on larger screens */
+/* Default styles for Leaflet's built-in controls 
+
+(e.g., zoom, locate) on larger screens */
 .leaflet-top.leaflet-left {
   position: absolute;
-  top: 44px;  /* Standard position from previous discussions. Adjust if your toggle button is higher/lower */
+  top: 44px;  /* Standard position from previous 
+
+discussions. Adjust if your toggle button is 
+
+higher/lower */
   left: 10px;
-  z-index: 1001; /* Ensure these controls are on top */
-  display: flex; /* Make it a flex container to stack controls */
-  flex-direction: column; /* Stack zoom/locate controls vertically */
-  align-items: center; /* Center them horizontally */
-  /* Remove the 'gap' from here as it might cause issues if not all children are Leaflet controls */
+  z-index: 1001; /* Ensure these controls are on 
+
+top */
+  display: flex; /* Make it a flex container to 
+
+stack controls */
+  flex-direction: column; /* Stack zoom/locate 
+
+controls vertically */
+  align-items: center; /* Center them horizontally 
+
+*/
+  /* Remove the 'gap' from here as it might cause 
+
+issues if not all children are Leaflet controls */
 }
 
 /* #toggle-button (your filter button) */
@@ -65,26 +100,48 @@
   cursor: pointer;
 }
 
-/* Leaflet's built-in controls (zoom, locate) container */
+/* Leaflet's built-in controls (zoom, locate) 
+
+container */
 .leaflet-top.leaflet-left {
   position: absolute;
-  top: 60px; /* Position below #toggle-button (10px top + ~40px height of #toggle-button + 10px gap) */
+  top: 60px; /* Position below #toggle-button 
+
+(10px top + ~40px height of #toggle-button + 10px 
+
+gap) */
   left: 10px; /* Align with #toggle-button */
   z-index: 1001;
   display: flex;
-  flex-direction: column; /* Stack controls vertically */
-  align-items: center; /* Center controls horizontally within their own area */
-  gap: 8px; /* Space between individual Leaflet controls (zoom in, zoom out, locate) */
+  flex-direction: column; /* Stack controls 
+
+vertically */
+  align-items: center; /* Center controls 
+
+horizontally within their own area */
+  gap: 8px; /* Space between individual Leaflet 
+
+controls (zoom in, zoom out, locate) */
 
 }
 
-/* Globe popup container (positioned below Leaflet controls) */
+/* Globe popup container (positioned below Leaflet 
+
+controls) */
 #globe-popup-container {
   position: absolute;
   /* This 'top' value needs to be precise.
-     Calculate it as: (top of .leaflet-top.leaflet-left) + (height of .leaflet-top.leaflet-left) + desired_gap */
-  top: 185px; /* **Desktop estimate - Adjust using browser inspector!** */
-  left: 48px; /* Align with other top-left controls */
+     Calculate it as: (top of .leaflet-
+
+top.leaflet-left) + (height of .leaflet-
+
+top.leaflet-left) + desired_gap */
+  top: 185px; /* **Desktop estimate - Adjust using 
+
+browser inspector!** */
+  left: 48px; /* Align with other top-left 
+
+controls */
   z-index: 1001;
   right: auto;
   bottom: auto;
@@ -104,7 +161,9 @@
   display: none;
   position: absolute;
   top: 40px; /* Below globe icon itself */
-  left: 0;   /* Aligned with parent #globe-popup-container */
+  left: 0;   /* Aligned with parent #globe-popup-
+
+container */
   background: white;
   padding: 6px;
   border-radius: 6px;
@@ -126,15 +185,23 @@
 
   /* Leaflet controls on mobile */
   .leaflet-top.leaflet-left {
-    top: 55px; /* Adjust based on new #toggle-button position + height + gap */
+    top: 55px; /* Adjust based on new #toggle-
+
+button position + height + gap */
     left: 5px;
     gap: 8px; /* Slightly less gap on mobile */
   }
 
   /* Globe popup container on mobile */
   #globe-popup-container {
-    /* **Mobile estimate - Adjust using browser inspector!** */
-    top: 185px; /* Calculate: (mobile .leaflet-top.leaflet-left top) + (mobile .leaflet-top.leaflet-left height) + desired_gap */
+    /* **Mobile estimate - Adjust using browser 
+
+inspector!** */
+    top: 185px; /* Calculate: (mobile .leaflet-
+
+top.leaflet-left top) + (mobile .leaflet-
+
+top.leaflet-left height) + desired_gap */
     left: 3px;
   }
 
@@ -166,10 +233,18 @@
     gap: 4px;
   }
 
-  /* Globe popup container on very small screens */
+  /* Globe popup container on very small screens 
+
+*/
   #globe-popup-container {
-    /* **Very small mobile estimate - Adjust using browser inspector!** */
-    top: 176px; /* Calculate: (very small mobile .leaflet-top.leaflet-left top) + (its height) + desired_gap */
+    /* **Very small mobile estimate - Adjust using 
+
+browser inspector!** */
+    top: 176px; /* Calculate: (very small mobile 
+
+.leaflet-top.leaflet-left top) + (its height) + 
+
+desired_gap */
     left: 5px;
   }
 
@@ -209,19 +284,29 @@
       border-radius: 50%;
     }
 .leaflet-top.leaflet-left {
-  top: 44px;              /* Keeps it slightly down from the top */
-  left: 4.5%;              /* Move to the center */
+  top: 44px;              /* Keeps it slightly 
+
+down from the top */
+  left: 4.5%;              /* Move to the center 
+
+*/
   transform: translateX(-50%); /* Center-align */
   display: flex;
-  flex-direction: column; /* Stack buttons vertically */
-  align-items: center;    /* Optional: makes it neater */
+  flex-direction: column; /* Stack buttons 
+
+vertically */
+  align-items: center;    /* Optional: makes it 
+
+neater */
  width: 24px;
     height: 24px;
 }
 
 
 .map-title {
-  position: absolute; /* or fixed, depending on your layout */
+  position: absolute; /* or fixed, depending on 
+
+your layout */
   bottom: 20px; /* move up from the bottom */
   left: 20px;
   background: white;
@@ -243,7 +328,9 @@
 }
 
 /* Medium screens */
-@media (min-width: 601px) and (max-width: 1024px) {
+@media (min-width: 601px) and (max-width: 1024px) 
+
+{
   .map-title {
     bottom: 30px;
     font-size: 16px;
@@ -354,7 +441,9 @@
 }
 
 /* Medium screens (tablets) */
-@media (min-width: 601px) and (max-width: 1024px) {
+@media (min-width: 601px) and (max-width: 1024px) 
+
+{
   .basemap-switcher {
     padding: 5px;
     gap: 5px;
@@ -382,16 +471,26 @@
   </style>
 </head>
 <!-- Leaflet core JS -->
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script 
+
+src="https://unpkg.com/leaflet/dist/leaflet.js"></
+
+script>
 
 <!-- LocateControl JS -->
-<script src="https://unpkg.com/leaflet.locatecontrol/dist/L.Control.Locate.min.js"></script>
+<script 
+
+src="https://unpkg.com/leaflet.locatecontrol/dist/
+
+L.Control.Locate.min.js"></script>
 
 <body>
 
 <!-- Google Translate Dropdown -->
 <div id="globe-popup-container">
-  <i class="fas fa-globe" id="globe-icon" title="Select Language"></i>
+  <i class="fas fa-globe" id="globe-icon" 
+
+title="Select Language"></i>
   <div id="translate-popup">
     <div id="google_translate_element"></div>
   </div>
@@ -404,19 +503,33 @@
 <script>
   // Initialize the map
 // Define multiple base maps
-const osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+const osm = L.tileLayer('https://
+
+{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: '&copy OpenStreetMap contributors'
 });
 
-const esri = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+const esri = L.tileLayer
+
+('https://server.arcgisonline.com/ArcGIS/rest/serv
+
+ices/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
   attribution: 'Tiles &copy Esri'
 });
 
-const cartoLight = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+const cartoLight = L.tileLayer('https://
+
+{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}
+
+{r}.png', {
   attribution: '&copy CartoDB'
 });
 
-const cartoDark = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+const cartoDark = L.tileLayer('https://
+
+{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}
+
+{r}.png', {
   attribution: '&copy CartoDB'
 });
 
@@ -430,16 +543,40 @@ const map = L.map('map', {
 });
 
 // Add custom base map switcher with symbols
-const baseMapControl = L.control({ position: 'bottomright' });
+const baseMapControl = L.control({ position: 
+
+'bottomright' });
 
 baseMapControl.onAdd = function () {
-  const div = L.DomUtil.create('div', 'basemap-switcher');
+  const div = L.DomUtil.create('div', 'basemap-
+
+switcher');
 
   div.innerHTML = `
-    <button data-layer="osm" title="OpenStreetMap"><img src="https://img.icons8.com/ios-filled/24/map.png"/></button>
-    <button data-layer="esri" title="Satellite"><img src="https://img.icons8.com/ios-filled/24/satellite.png"/></button>
-    <button data-layer="cartoLight" title="Light Mode"><img src="https://img.icons8.com/ios-filled/24/sun--v1.png"/></button>
-    <button data-layer="cartoDark" title="Dark Mode"><img src="https://img.icons8.com/ios-filled/24/moon-symbol.png"/></button>
+    <button data-layer="osm" 
+
+title="OpenStreetMap"><img 
+
+src="https://img.icons8.com/ios-
+
+filled/24/map.png"/></button>
+    <button data-layer="esri" 
+
+title="Satellite"><img 
+
+src="https://img.icons8.com/ios-
+
+filled/24/satellite.png"/></button>
+    <button data-layer="cartoLight" title="Light 
+
+Mode"><img src="https://img.icons8.com/ios-
+
+filled/24/sun--v1.png"/></button>
+    <button data-layer="cartoDark" title="Dark 
+
+Mode"><img src="https://img.icons8.com/ios-
+
+filled/24/moon-symbol.png"/></button>
   `;
 
   L.DomEvent.disableClickPropagation(div);
@@ -458,12 +595,18 @@ const baseLayers = {
 
 // Enable switching basemaps
 map.whenReady(() => {
-  document.querySelectorAll('.basemap-switcher button').forEach(button => {
+  document.querySelectorAll('.basemap-switcher 
+
+button').forEach(button => {
     button.addEventListener('click', () => {
-      const layerName = button.getAttribute('data-layer');
+      const layerName = button.getAttribute
+
+('data-layer');
       
       // Remove all base layers
-      Object.values(baseLayers).forEach(layer => map.removeLayer(layer));
+      Object.values(baseLayers).forEach(layer => 
+
+map.removeLayer(layer));
       
       // Add selected layer
       baseLayers[layerName].addTo(map);
@@ -484,173 +627,246 @@ L.control.locate({
   }
 }).addTo(map);
 
-map.on('locationfound', async function (e) {
-  const userLatLng = e.latlng;
-  const avgSpeedKmph = 40;
-  const weatherApiKey = '4200fd9e8f75bb4b3d866dc03f596781'; // replace with your key
+let lastPopupContainer = null;
+let lastUserLatLng = null;
+let liveUpdateInterval = null;
 
-  // Prepare a DOM element container for the popup
+map.on('locationfound', async function (e) {
+  const avgSpeedKmph = 40;
+  const weatherApiKey = 
+
+'4200fd9e8f75bb4b3d866dc03f596781';
+  lastUserLatLng = e.latlng;
+
+  // Only create and open the popup once
+  if (lastPopupContainer) return;
+
   const container = document.createElement('div');
-  container.style.fontFamily = 'Arial, sans-serif';
+  container.style.fontFamily = 'Arial, sans-
+
+serif';
   container.style.fontSize = '14px';
   container.style.color = '#333';
-container.style.background = 'white';
-container.style.border = '1px solid #ccc';
-container.style.borderRadius = '8px';
-container.style.boxShadow = '0 2px 8px rgba(0,0,0,0.3)';
-container.style.padding = '10px';
-container.style.maxWidth = '300px';
+  container.style.background = 'white';
+  container.style.border = '1px solid #ccc';
+  container.style.borderRadius = '8px';
+  container.style.boxShadow = '0 2px 8px rgba
 
+(0,0,0,0.3)';
+  container.style.padding = '10px';
+  container.style.maxWidth = '300px';
 
   container.innerHTML = `
-    <div style="font-size: 16px; margin-bottom: 6px;">
-      <img src="https://cdn-icons-png.flaticon.com/512/684/684908.png" width="18" style="vertical-align: middle; margin-right: 6px;">
+    <div style="font-size: 16px; margin-bottom: 
+
+6px;">
+      <img src="https://cdn-icons-
+
+png.flaticon.com/512/684/684908.png" width="18" 
+
+style="vertical-align: middle; margin-right: 
+
+6px;">
       <strong>Your Current Location</strong>
     </div>
-
     <div style="margin-bottom: 10px;">
       <strong>Filter:</strong><br>
-      <label><input type="checkbox" class="category-filter" value="religious" checked> Religious</label><br>
-      <label><input type="checkbox" class="category-filter" value="nature" checked> Nature</label><br>
-      <label><input type="checkbox" class="category-filter" value="historical" checked> Historical</label>
-    </div>
+      <label><input type="checkbox" 
 
-    <div id="filtered-places" class="popup-scroll" style="max-height: 220px; overflow-y: auto; padding-right: 8px;">
+class="category-filter" value="religious" checked> 
+
+Religious</label><br>
+      <label><input type="checkbox" 
+
+class="category-filter" value="nature" checked> 
+
+Nature</label><br>
+      <label><input type="checkbox" 
+
+class="category-filter" value="historical" 
+
+checked> Historical</label>
+    </div>
+    <div id="filtered-places" class="popup-scroll" 
+
+style="max-height: 220px; overflow-y: auto; 
+
+padding-right: 8px;">
       Loading places...
     </div>
   `;
-// ? Stop propagation at container level
-L.DomEvent.disableClickPropagation(container);
-L.DomEvent.disableScrollPropagation(container);
 
-// ? Stop event propagation on all checkboxes
-container.querySelectorAll('input').forEach((input) => {
-  input.addEventListener('click', (e) => e.stopPropagation());
-  input.addEventListener('mousedown', (e) => e.stopPropagation());
-  input.addEventListener('dblclick', (e) => e.stopPropagation());
-});
+  L.DomEvent.disableClickPropagation(container);
+  L.DomEvent.disableScrollPropagation(container);
+  container.querySelectorAll('input').forEach
 
-// ? Finally, open the popup
-L.popup().setLatLng(userLatLng).setContent(container).openOn(map);
-  // Add popup to map with the custom container
-  L.popup().setLatLng(userLatLng).setContent(container).openOn(map);
+(input => {
+    input.addEventListener('click', e => 
 
-  // Function to get filtered locations content
-  async function getFilteredContent(categories) {
+e.stopPropagation());
+    input.addEventListener('mousedown', e => 
+
+e.stopPropagation());
+  });
+
+  L.popup().setLatLng(lastUserLatLng).setContent
+
+(container).openOn(map);
+  lastPopupContainer = container;
+
+  const filteredContainer = 
+
+container.querySelector('#filtered-places');
+
+  async function renderPlaces(selectedCategories) 
+
+{
     let html = '';
 
     for (const loc of locations) {
-      if (!categories.includes(loc.category)) continue;
+      if (!selectedCategories.includes
 
-      const latDiff = Math.abs(userLatLng.lat - loc.lat);
-      const lngDiff = Math.abs(userLatLng.lng - loc.lng);
-      const manhattanKm = ((latDiff + lngDiff) * 111).toFixed(2);
-      const estimatedTime = (manhattanKm / avgSpeedKmph).toFixed(2);
-      const gmapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${userLatLng.lat},${userLatLng.lng}&destination=${loc.lat},${loc.lng}`;
+(loc.category)) continue;
+
+      const latDiff = Math.abs(lastUserLatLng.lat 
+
+- loc.lat);
+      const lngDiff = Math.abs(lastUserLatLng.lng 
+
+- loc.lng);
+      const manhattanKm = ((latDiff + lngDiff) * 
+
+111).toFixed(2);
+      const estimatedTime = (manhattanKm / 
+
+avgSpeedKmph).toFixed(2);
+      const gmapsUrl = 
+
+`https://www.google.com/maps/dir/?api=1&origin=
+
+${lastUserLatLng.lat},${lastUserLatLng.lng}
+
+&destination=${loc.lat},${loc.lng}`;
 
       let weatherInfo = 'Loading weather...';
       try {
-        const res = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${loc.lat}&lon=${loc.lng}&units=metric&appid=${weatherApiKey}`);
+        const res = await fetch
+
+(`https://api.openweathermap.org/data/2.5/weather?
+
+lat=${loc.lat}&lon=${loc.lng}&units=metric&appid=
+
+${weatherApiKey}`);
         const data = await res.json();
         const temp = data.main?.temp ?? 'N/A';
-        const desc = data.weather?.[0]?.description ?? 'N/A';
+        const desc = data.weather?.
+
+[0]?.description ?? 'N/A';
         weatherInfo = `${temp}&deg;C, ${desc}`;
       } catch {
         weatherInfo = 'Could not load weather';
       }
 
       html += `
-        <div style="margin-bottom: 12px; padding: 8px; border-bottom: 1px solid #ccc; max-width: 300px; max-height: 200px; overflow: auto;">
-  <strong>${loc.name}</strong><br>
-  Approximate Distance: <b>${manhattanKm} km</b><br>
-  Estimated Time: <b>${estimatedTime} hrs</b><br>
-  Weather: <b>${weatherInfo}</b><br>
-  <a href="${gmapsUrl}" target="_blank" style="color: #007bff;">Open in Google Maps</a>
-</div>
+        <div class="place-entry" data-
 
+lat="${loc.lat}" data-lng="${loc.lng}" 
+
+style="margin-bottom: 12px; padding: 8px; border-
+
+bottom: 1px solid #ccc;">
+          <strong>${loc.name}</strong><br>
+          Approximate Distance: <b class="live-
+
+distance">${manhattanKm} km</b><br>
+          Estimated Time: <b class="live-time">
+
+${estimatedTime} hrs</b><br>
+          Weather: <b>${weatherInfo}</b><br>
+          <a href="${gmapsUrl}" target="_blank" 
+
+style="color: #007bff;">Open in Google Maps</a>
+        </div>
       `;
     }
 
-    return html || `<div style="color: gray;">No places match the selected filters.</div>`;
+    filteredContainer.innerHTML = html || `<div 
+
+style="color: gray;">No places match the selected 
+
+filters.</div>`;
   }
 
-  // Initial one-time popup creation
-let popupInitialized = false;
-let userLocation = null;
+  // Initial render
+  await renderPlaces(['religious', 'nature', 
 
-map.on('locationfound', async function (e) {
-  userLocation = e.latlng;
+'historical']);
 
-  if (!popupInitialized) {
-    popupInitialized = true;
+  // Filter checkbox handler
+  container.querySelectorAll('.category-
 
-    popupContainer = document.createElement('div');
-    popupContainer.style.fontFamily = 'Arial, sans-serif';
-    popupContainer.style.fontSize = '14px';
-    popupContainer.style.color = '#333';
-    popupContainer.style.background = 'white';
-    popupContainer.style.border = '1px solid #ccc';
-    popupContainer.style.borderRadius = '8px';
-    popupContainer.style.boxShadow = '0 2px 8px rgba(0,0,0,0.3)';
-    popupContainer.style.padding = '10px';
-    popupContainer.style.maxWidth = '300px';
+filter').forEach(cb => {
+    cb.addEventListener('change', async () => {
+      const selected = Array.from
 
-    popupContainer.innerHTML = `
-      <div style="font-size: 16px; margin-bottom: 6px;">
-        <img src="https://cdn-icons-png.flaticon.com/512/684/684908.png" width="18" style="vertical-align: middle; margin-right: 6px;">
-        <strong>Your Current Location</strong>
-      </div>
+(container.querySelectorAll('.category-filter'))
+        .filter(c => c.checked)
+        .map(c => c.value);
+      await renderPlaces(selected);
+    });
+  });
 
-      <div style="margin-bottom: 10px;">
-        <strong>Filter:</strong><br>
-        <label><input type="checkbox" class="category-filter" value="religious" checked> Religious</label><br>
-        <label><input type="checkbox" class="category-filter" value="nature" checked> Nature</label><br>
-        <label><input type="checkbox" class="category-filter" value="historical" checked> Historical</label>
-      </div>
+  // Start live updater
+  liveUpdateInterval = setInterval(() => {
+    navigator.geolocation.getCurrentPosition(pos 
 
-      <div id="filtered-places" class="popup-scroll" style="max-height: 220px; overflow-y: auto; padding-right: 8px;">
-        Loading places...
-      </div>
-    `;
+=> {
+      lastUserLatLng = L.latLng
 
-    L.DomEvent.disableClickPropagation(popupContainer);
-    L.DomEvent.disableScrollPropagation(popupContainer);
+(pos.coords.latitude, pos.coords.longitude);
+      container.querySelectorAll('.place-
 
-    popupContainer.querySelectorAll('input').forEach((input) => {
-      input.addEventListener('click', (e) => e.stopPropagation());
-      input.addEventListener('mousedown', (e) => e.stopPropagation());
-      input.addEventListener('dblclick', (e) => e.stopPropagation());
+entry').forEach(entry => {
+        const lat = parseFloat(entry.dataset.lat);
+        const lng = parseFloat(entry.dataset.lng);
+        const latDiff = Math.abs
 
-      input.addEventListener('change', async () => {
-        activeFilters = Array.from(popupContainer.querySelectorAll('.category-filter'))
-          .filter(cb => cb.checked)
-          .map(cb => cb.value);
+(lastUserLatLng.lat - lat);
+        const lngDiff = Math.abs
 
-        filteredContainer.innerHTML = 'Updating...';
-        filteredContainer.innerHTML = await getFilteredContent(userLocation, activeFilters);
+(lastUserLatLng.lng - lng);
+        const manhattanKm = ((latDiff + lngDiff) * 
+
+111).toFixed(2);
+        const estimatedTime = (manhattanKm / 
+
+avgSpeedKmph).toFixed(2);
+        entry.querySelector('.live-
+
+distance').innerHTML = `${manhattanKm} km`;
+        entry.querySelector('.live-
+
+time').innerHTML = `${estimatedTime} hrs`;
       });
     });
-
-    L.popup().setLatLng(userLocation).setContent(popupContainer).openOn(map);
-    filteredContainer = popupContainer.querySelector('#filtered-places');
-    filteredContainer.innerHTML = await getFilteredContent(userLocation, activeFilters);
-  } else {
-    // Location updated: refresh just the content
-    if (filteredContainer && popupContainer) {
-      filteredContainer.innerHTML = await getFilteredContent(userLocation, activeFilters);
-    }
-  }
+  }, 5000); // update every 5 seconds
 });
 
 
 
   // Add tile layer
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  L.tileLayer('https://
+
+{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   }).addTo(map);
 
   // Add marker
-  var marker = L.marker([51.505, -0.09]).addTo(map);
-  marker.bindPopup('<b>Hello world!</b><br>I am a popup.').openPopup();
+  var marker = L.marker([51.505, -0.09]).addTo
+
+(map);
+  marker.bindPopup('<b>Hello world!</b><br>I am a 
+
+popup.').openPopup();
 
   // Style for the boundary
   var boundaryStyle = {
@@ -660,11 +876,15 @@ map.on('locationfound', async function (e) {
     fillOpacity: 0.1
   };
 
-var titleControl = L.control({ position: 'bottomleft' });
+var titleControl = L.control({ position: 
+
+'bottomleft' });
 
 titleControl.onAdd = function (map) {
   var div = L.DomUtil.create('div', 'map-title');
-  div.innerHTML = "<strong>BANSWARA TOURISM</strong>";  // ?? Change title here
+  div.innerHTML = "<strong>BANSWARA 
+
+TOURISM</strong>";  // ?? Change title here
   return div;
 };
 
@@ -676,244 +896,652 @@ const locations = [
     lat: 23.57044167,
     lng: 74.53465278,
     category: "nature",
-    image: "https://tinypic.host/images/2025/05/08/20210828_115723-min.jpg",
-    description: "These are beautiful river islands carved by the flowing Mahi river.These landforms are so majestic that it attracts so many visitors every monsoon. Based on these islands Banswara is often been called as 'City of Hundred islands.",
-    moreInfo: "https://en.wikipedia.org/wiki/Anand_Sagar_Lake"
+    image: 
+
+"https://tinypic.host/images/2025/05/08/20210828_1
+
+15723-min.jpg",
+    description: "These are beautiful river 
+
+islands carved by the flowing Mahi river.These 
+
+landforms are so majestic that it attracts so many 
+
+visitors every monsoon. Based on these islands 
+
+Banswara is often been called as 'City of Hundred 
+
+islands.",
+    moreInfo: 
+
+"https://en.wikipedia.org/wiki/Anand_Sagar_Lake"
   },
  {
     name: "Nandini Mata Temple",
     lat: 23.41213889,
     lng: 74.33668611,
     category: "nature",
-    image: "https://tinypic.host/images/2025/05/09/IMG_20241015_121758-min.jpg",
-    description: "Located at an elevation of 1300 feets is the famous Nandini Mata Temple which is famously known as 'Pavagadh of Vagad'. The journey to the top of the plateau is arduous and painstaking however the devotees flock in large number particularly during the time of Navratri festival.",
-    moreInfo: "https://en.wikipedia.org/wiki/Anand_Sagar_Lake"
+    image: 
+
+"https://tinypic.host/images/2025/05/09/IMG_202410
+
+15_121758-min.jpg",
+    description: "Located at an elevation of 1300 
+
+feets is the famous Nandini Mata Temple which is 
+
+famously known as 'Pavagadh of Vagad'. The journey 
+
+to the top of the plateau is arduous and 
+
+painstaking however the devotees flock in large 
+
+number particularly during the time of Navratri 
+
+festival.",
+    moreInfo: 
+
+"https://en.wikipedia.org/wiki/Anand_Sagar_Lake"
   },
  {
     name: "Anand Sagar Lake (Bai Talab)",
     lat: 23.54587778,
     lng: 74.47765278,
     category: "historical",
-    image: "https://tinypic.host/images/2025/05/08/20211121_132941-min.jpg",
-    description: "Also called as 'Bai Talab' because it was constructed by Lanchi Bai the queen of Jagmal Singh is an artificial lake surrounded by holy trees called KalpVriksha which are worshipped by people.Near to it are the tombs or cenotaphs of Bygone rulers.",
-    moreInfo: "https://en.wikipedia.org/wiki/Anand_Sagar_Lake"
+    image: 
+
+"https://tinypic.host/images/2025/05/08/20211121_1
+
+32941-min.jpg",
+    description: "Also called as 'Bai Talab' 
+
+because it was constructed by Lanchi Bai the queen 
+
+of Jagmal Singh is an artificial lake surrounded 
+
+by holy trees called KalpVriksha which are 
+
+worshipped by people.Near to it are the tombs or 
+
+cenotaphs of Bygone rulers.",
+    moreInfo: 
+
+"https://en.wikipedia.org/wiki/Anand_Sagar_Lake"
   },
 {
     name: "Rani-Bani Waterfall",
     lat: 23.443225,
     lng: 74.477975,
     category: "nature",
-    image: "https://tinypic.host/images/2025/04/27/IMG_20241015_095851-min.jpg",
-    description: "These are beautiful river islands carved by the flowing Mahi river.These landforms are so majestic that it attracts so many visitors every monsoon. Based on these islands Banswara is often been called as 'City of Hundred islands.",
-    moreInfo: "https://en.wikipedia.org/wiki/Anand_Sagar_Lake"
+    image: 
+
+"https://tinypic.host/images/2025/04/27/IMG_202410
+
+15_095851-min.jpg",
+    description: "These are beautiful river 
+
+islands carved by the flowing Mahi river.These 
+
+landforms are so majestic that it attracts so many 
+
+visitors every monsoon. Based on these islands 
+
+Banswara is often been called as 'City of Hundred 
+
+islands.",
+    moreInfo: 
+
+"https://en.wikipedia.org/wiki/Anand_Sagar_Lake"
   },
 {
     name: "Seengpura Waterfall",
     lat: 23.480252785,
     lng: 74.46395833,
     category: "nature",
-    image: "https://tinypic.host/images/2025/04/27/IMG_20241015_095851-min.jpg",
-    description: "These are beautiful river islands carved by the flowing Mahi river.These landforms are so majestic that it attracts so many visitors every monsoon. Based on these islands Banswara is often been called as 'City of Hundred islands.",
-    moreInfo: "https://en.wikipedia.org/wiki/Anand_Sagar_Lake"
+    image: 
+
+"https://tinypic.host/images/2025/04/27/IMG_202410
+
+15_095851-min.jpg",
+    description: "These are beautiful river 
+
+islands carved by the flowing Mahi river.These 
+
+landforms are so majestic that it attracts so many 
+
+visitors every monsoon. Based on these islands 
+
+Banswara is often been called as 'City of Hundred 
+
+islands.",
+    moreInfo: 
+
+"https://en.wikipedia.org/wiki/Anand_Sagar_Lake"
   },
 {
     name: "Jhua Waterfall",
     lat: 23.51874722,
     lng: 74.66520833,
     category: "nature",
-    image: "https://tinypic.host/images/2025/04/27/IMG_20241015_095851-min.jpg",
-    description: "These are beautiful river islands carved by the flowing Mahi river.These landforms are so majestic that it attracts so many visitors every monsoon. Based on these islands Banswara is often been called as 'City of Hundred islands.",
-    moreInfo: "https://en.wikipedia.org/wiki/Anand_Sagar_Lake"
+    image: 
+
+"https://tinypic.host/images/2025/04/27/IMG_202410
+
+15_095851-min.jpg",
+    description: "These are beautiful river 
+
+islands carved by the flowing Mahi river.These 
+
+landforms are so majestic that it attracts so many 
+
+visitors every monsoon. Based on these islands 
+
+Banswara is often been called as 'City of Hundred 
+
+islands.",
+    moreInfo: 
+
+"https://en.wikipedia.org/wiki/Anand_Sagar_Lake"
   },
 {
     name: "Kadeliya Waterfall",
     lat: 23.53267778,
     lng: 74.48671667,
     category: "nature",
-    image: "https://tinypic.host/images/2025/05/08/20210828_124816-min.jpg",
-    description: "Kadeliya waterfall is another jewel in terms of its overall attractiveness. The waterfall is not very steep and this allows the visitors to see the merging of streams and ultimately falling down.",
-    moreInfo: "https://en.wikipedia.org/wiki/Anand_Sagar_Lake"
+    image: 
+
+"https://tinypic.host/images/2025/05/08/20210828_1
+
+24816-min.jpg",
+    description: "Kadeliya waterfall is another 
+
+jewel in terms of its overall attractiveness. The 
+
+waterfall is not very steep and this allows the 
+
+visitors to see the merging of streams and 
+
+ultimately falling down.",
+    moreInfo: 
+
+"https://en.wikipedia.org/wiki/Anand_Sagar_Lake"
   },
 {
     name: "Kagdi Pickup Weir",
     lat: 23.54616111,
     lng: 74.46706944,
     category: "nature",
-    image: "https://tinypic.host/images/2025/05/08/20211121_133856-min.jpg",
-    description: "It is a part of Mahi bajaj sagar project and it overlooks Kagdi lake. It is a chief tourist attraction for the residents of Banswara and others since many years. It has beautiful gardens, fountains, temple and water strechching over large area.",
-    moreInfo: "https://en.wikipedia.org/wiki/Anand_Sagar_Lake"
+    image: 
+
+"https://tinypic.host/images/2025/05/08/20211121_1
+
+33856-min.jpg",
+    description: "It is a part of Mahi bajaj sagar 
+
+project and it overlooks Kagdi lake. It is a chief 
+
+tourist attraction for the residents of Banswara 
+
+and others since many years. It has beautiful 
+
+gardens, fountains, temple and water strechching 
+
+over large area.",
+    moreInfo: 
+
+"https://en.wikipedia.org/wiki/Anand_Sagar_Lake"
   },
 {
     name: "Maa Tripura Sundari Temple",
     lat: 23.5325,
     lng: 74.32138889,
     category: "religious",
-    image: "https://tinypic.host/images/2025/05/03/IMG-20190303-WA0005-1.jpg",
-    description: "Often been known as Tartai Mata,based on an inscription found in 1540 A.D it is believed that this temple existed since the times of Kushana King Kanishka.The idol of tripura sundar is adorned with different garments everyday which attracts the devotees.",
-    moreInfo: "https://en.wikipedia.org/wiki/Anand_Sagar_Lake"
+    image: 
+
+"https://tinypic.host/images/2025/05/03/IMG-
+
+20190303-WA0005-1.jpg",
+    description: "Often been known as Tartai 
+
+Mata,based on an inscription found in 1540 A.D it 
+
+is believed that this temple existed since the 
+
+times of Kushana King Kanishka.The idol of tripura 
+
+sundar is adorned with different garments everyday 
+
+which attracts the devotees.",
+    moreInfo: 
+
+"https://en.wikipedia.org/wiki/Anand_Sagar_Lake"
   },
 {
     name: "Arthuna Group of Monuments",
     lat: 23.49152500,
     lng: 74.10235833,
     category: "historical",
-    image: "https://tinypic.host/images/2025/05/08/1746717783460.jpg",
-    description: "Arthuna is very famous for its 10th century early medieval archaeological group of monuments. Arthuna was the capital of Vagad Region in the past and its architecture belongs to the Parmara Style as it was built by Paramara kings.",
-    moreInfo: "https://en.wikipedia.org/wiki/Anand_Sagar_Lake"
+    image: 
+
+"https://tinypic.host/images/2025/05/08/1746717783
+
+460.jpg",
+    description: "Arthuna is very famous for its 
+
+10th century early medieval archaeological group 
+
+of monuments. Arthuna was the capital of Vagad 
+
+Region in the past and its architecture belongs to 
+
+the Parmara Style as it was built by Paramara 
+
+kings.",
+    moreInfo: 
+
+"https://en.wikipedia.org/wiki/Anand_Sagar_Lake"
   },
 {
     name: "Mangarh",
     lat: 23.35029444,
     lng: 73.98674167,
     category: "historical",
-    image: "https://tinypic.host/images/2025/05/08/IMG_20241020_091410-min.jpg",
-    description: "Known as the 'Jallianwala wala bagh of Rajasthan' a massacare happened here where about 1500 people from Bhil community were killed by Britishers who were gathered there under the leadership of Gobind Guru to oppose British Government.",
-    moreInfo: "https://en.wikipedia.org/wiki/Anand_Sagar_Lake"
+    image: 
+
+"https://tinypic.host/images/2025/05/08/IMG_202410
+
+20_091410-min.jpg",
+    description: "Known as the 'Jallianwala wala 
+
+bagh of Rajasthan' a massacare happened here where 
+
+about 1500 people from Bhil community were killed 
+
+by Britishers who were gathered there under the 
+
+leadership of Gobind Guru to oppose British 
+
+Government.",
+    moreInfo: 
+
+"https://en.wikipedia.org/wiki/Anand_Sagar_Lake"
   },
 {
     name: "Dwarkadheesh Temple ruins",
     lat: 23.56258056,
     lng: 74.32657778,
     category: "historical",
-    image: "https://tinypic.host/images/2025/05/08/IMG-20190303-WA0047.jpg",
-    description: "These are group of temples which are in ruins belonging to 11th and 12th century A.D and are located in the vicinity of Talwara bus stand.",
-    moreInfo: "https://en.wikipedia.org/wiki/Anand_Sagar_Lake"
+    image: 
+
+"https://tinypic.host/images/2025/05/08/IMG-
+
+20190303-WA0047.jpg",
+    description: "These are group of temples which 
+
+are in ruins belonging to 11th and 12th century 
+
+A.D and are located in the vicinity of Talwara bus 
+
+stand.",
+    moreInfo: 
+
+"https://en.wikipedia.org/wiki/Anand_Sagar_Lake"
   },
 {
     name: "Banswara Fort/Raj mandir/City palace",
     lat: 23.54363889,
     lng: 74.44691667,
     category: "historical",
-    image: "https://tinypic.host/images/2025/05/08/20220522_134725-min.jpg",
-    description: "Overlooking the town of Banswara is 16th century structure popularly known as Raj mandir. It is built in perfect Rajputana style depicting the glory of Maharawals. This palace still belongs to Royal family.",
-    moreInfo: "https://en.wikipedia.org/wiki/Anand_Sagar_Lake"
+    image: 
+
+"https://tinypic.host/images/2025/05/08/20220522_1
+
+34725-min.jpg",
+    description: "Overlooking the town of Banswara 
+
+is 16th century structure popularly known as Raj 
+
+mandir. It is built in perfect Rajputana style 
+
+depicting the glory of Maharawals. This palace 
+
+still belongs to Royal family.",
+    moreInfo: 
+
+"https://en.wikipedia.org/wiki/Anand_Sagar_Lake"
   },
 {
     name: "Parahera",
     lat: 23.57468056,
     lng: 74.22040000,
     category: "historical",
-    image: "https://tinypic.host/images/2025/05/03/20211126_120307-min.jpg",
-    description: "Believed to be made by king Mandlik is Paraheda shiv temple of 12th century which is adorned with beautiful sculptures. It is in the vicinity of Arthuna temples. All this temples shows prosperity & prominence of Shaivism in Vagad under Parmara rule",
-    moreInfo: "https://en.wikipedia.org/wiki/Anand_Sagar_Lake"
+    image: 
+
+"https://tinypic.host/images/2025/05/03/20211126_1
+
+20307-min.jpg",
+    description: "Believed to be made by king 
+
+Mandlik is Paraheda shiv temple of 12th century 
+
+which is adorned with beautiful sculptures. It is 
+
+in the vicinity of Arthuna temples. All this 
+
+temples shows prosperity & prominence of Shaivism 
+
+in Vagad under Parmara rule",
+    moreInfo: 
+
+"https://en.wikipedia.org/wiki/Anand_Sagar_Lake"
   },
   {
     name: "Ghotia Amba",
     lat: 23.34539722,
     lng: 74.41066667,
     category: "religious",
-    image: "https://tinypic.host/images/2025/04/27/IMG_20241015_095851-min.jpg",
-    description: "Surrounded by enigmatic hills is a place called GhotiaAmba. According to mythology Pandavas stayed here during their exile & planted Mango trees (Amba) by which the name is derived. Every year a huge fair takes place during chaitra Navratri.",
-    moreInfo: "https://en.wikipedia.org/wiki/Jholla_Waterfall"
+    image: 
+
+"https://tinypic.host/images/2025/04/27/IMG_202410
+
+15_095851-min.jpg",
+    description: "Surrounded by enigmatic hills is 
+
+a place called GhotiaAmba. According to mythology 
+
+Pandavas stayed here during their exile & planted 
+
+Mango trees (Amba) by which the name is derived. 
+
+Every year a huge fair takes place during chaitra 
+
+Navratri.",
+    moreInfo: 
+
+"https://en.wikipedia.org/wiki/Jholla_Waterfall"
   },
 {
     name: "Abdullah Pir Shrine",
     lat: 23.53513889,
     lng: 74.43932778,
     category: "religious",
-    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Natural_Waterfall.jpg/640px-Natural_Waterfall.jpg",
-    description: "Also known as Dargah of Abdul Rasul, the place attracts large number of people from different parts of the country especially people of Bohra community during the time of Urs which commemorates the death anniversary of Sufi saint.",
-    moreInfo: "https://en.wikipedia.org/wiki/Jholla_Waterfall"
+    image: 
+
+"https://upload.wikimedia.org/wikipedia/commons/th
+
+umb/e/ea/Natural_Waterfall.jpg/640px-
+
+Natural_Waterfall.jpg",
+    description: "Also known as Dargah of Abdul 
+
+Rasul, the place attracts large number of people 
+
+from different parts of the country especially 
+
+people of Bohra community during the time of Urs 
+
+which commemorates the death anniversary of Sufi 
+
+saint.",
+    moreInfo: 
+
+"https://en.wikipedia.org/wiki/Jholla_Waterfall"
   },
 {
     name: "Samai Mata Temple",
     lat: 23.52303889,
     lng: 74.45757778,
     category: "religious",
-    image: "https://tinypic.host/images/2025/05/03/20210828_132729-min.jpg",
-    description: "Located on the top of Samai Mata hills, surrounded by lush green forest is the Samai Mata temple. People often have to climb the hill to accomplish darshan and thus it gives unique experience of trekking.",
-    moreInfo: "https://en.wikipedia.org/wiki/Jholla_Waterfall"
+    image: 
+
+"https://tinypic.host/images/2025/05/03/20210828_1
+
+32729-min.jpg",
+    description: "Located on the top of Samai Mata 
+
+hills, surrounded by lush green forest is the 
+
+Samai Mata temple. People often have to climb the 
+
+hill to accomplish darshan and thus it gives 
+
+unique experience of trekking.",
+    moreInfo: 
+
+"https://en.wikipedia.org/wiki/Jholla_Waterfall"
   },
 {
     name: "Madareshwar Temple",
     lat: 23.55421389,
     lng: 74.46954444,
     category: "religious",
-    image: "https://ik.imagekit.io/kfyvf110y/1747914481832.jpg?updatedAt=1748100966183",
-    description: "Located in the vicinity of Banswara city is the Madareshwar temple which amalgamates both faith & nature as it is located on a plateau where several streams flow downward. Here there is a cave in which water drips on the Shivlinga.",
-    moreInfo: "https://en.wikipedia.org/wiki/Jholla_Waterfall"
+    image: 
+
+"https://ik.imagekit.io/kfyvf110y/1747914481832.jp
+
+g?updatedAt=1748100966183",
+    description: "Located in the vicinity of 
+
+Banswara city is the Madareshwar temple which 
+
+amalgamates both faith & nature as it is located 
+
+on a plateau where several streams flow downward. 
+
+Here there is a cave in which water drips on the 
+
+Shivlinga.",
+    moreInfo: 
+
+"https://en.wikipedia.org/wiki/Jholla_Waterfall"
   },
 {
     name: "Sai Temple",
     lat: 23.54694444,
     lng: 74.46685556,
     category: "religious",
-    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Natural_Waterfall.jpg/640px-Natural_Waterfall.jpg",
-    description: "Overlooking the Kagdi pickup weir and surrounded by the Malwa highlands built on a hillock is Sai temple which is one such in Vagad region. Here visitors make their way in a large number every Thursday and Sunday.",
-    moreInfo: "https://en.wikipedia.org/wiki/Jholla_Waterfall"
+    image: 
+
+"https://upload.wikimedia.org/wikipedia/commons/th
+
+umb/e/ea/Natural_Waterfall.jpg/640px-
+
+Natural_Waterfall.jpg",
+    description: "Overlooking the Kagdi pickup 
+
+weir and surrounded by the Malwa highlands built 
+
+on a hillock is Sai temple which is one such in 
+
+Vagad region. Here visitors make their way in a 
+
+large number every Thursday and Sunday.",
+    moreInfo: 
+
+"https://en.wikipedia.org/wiki/Jholla_Waterfall"
   },
 {
     name: "Bhimkund",
     lat: 23.57388889,
     lng: 74.255,
     category: "religious",
-    image: "https://tinypic.host/images/2025/05/08/20211126_122240-min.jpg",
-    description: "Located barely 5kms away from Ramkund & Tripura Sundari temple is a place which according to mythology was used by Pandavas. There are two water bodies, one having cold water known as Bheemkund & the other hot water called Draupadi Kund.",
-    moreInfo: "https://en.wikipedia.org/wiki/Jholla_Waterfall"
+    image: 
+
+"https://tinypic.host/images/2025/05/08/20211126_1
+
+22240-min.jpg",
+    description: "Located barely 5kms away from 
+
+Ramkund & Tripura Sundari temple is a place which 
+
+according to mythology was used by Pandavas. There 
+
+are two water bodies, one having cold water known 
+
+as Bheemkund & the other hot water called Draupadi 
+
+Kund.",
+    moreInfo: 
+
+"https://en.wikipedia.org/wiki/Jholla_Waterfall"
   },
 {
     name: "Brahmaji Temple Cheench",
     lat: 23.46472222,
     lng: 74.30916667,
     category: "religious",
-    image: "https://tinypic.host/images/2025/04/27/20210825_123744-min.jpg",
-    description: "Brahmaji temple is located in Cheench village. According to an inscription it was built around 1200 A.D & the original idol was made up of gold which was buried due to attacks by invaders. The present idol was set up by King Jagmal Singh in 1537 A.D.",
-    moreInfo: "https://en.wikipedia.org/wiki/Jholla_Waterfall"
+    image: 
+
+"https://tinypic.host/images/2025/04/27/20210825_1
+
+23744-min.jpg",
+    description: "Brahmaji temple is located in 
+
+Cheench village. According to an inscription it 
+
+was built around 1200 A.D & the original idol was 
+
+made up of gold which was buried due to attacks by 
+
+invaders. The present idol was set up by King 
+
+Jagmal Singh in 1537 A.D.",
+    moreInfo: 
+
+"https://en.wikipedia.org/wiki/Jholla_Waterfall"
   },
 {
     name: "Siddhi Vinayak Temple",
     lat: 23.5625,
     lng: 74.325,
     category: "religious",
-    image: "https://tinypic.host/images/2025/05/08/20220523_095115-min.jpg",
-    description: "It is also known as Amliya Ganesh because the idol was situated beneath a Neem tree. Temple was built in 11th century by Solanki King Siddharaja of Gujarat who was son of Karna. He built it to commemorate his victory over Malwa kingdom.",
-    moreInfo: "https://en.wikipedia.org/wiki/Jholla_Waterfall"
+    image: 
+
+"https://tinypic.host/images/2025/05/08/20220523_0
+
+95115-min.jpg",
+    description: "It is also known as Amliya 
+
+Ganesh because the idol was situated beneath a 
+
+Neem tree. Temple was built in 11th century by 
+
+Solanki King Siddharaja of Gujarat who was son of 
+
+Karna. He built it to commemorate his victory over 
+
+Malwa kingdom.",
+    moreInfo: 
+
+"https://en.wikipedia.org/wiki/Jholla_Waterfall"
   },
 {
     name: "Ramkund",
     lat: 23.55472222,
     lng: 74.29194444,
     category: "religious",
-    image: "https://tinypic.host/images/2025/05/09/20211126_124641-min.jpg",
-    description: "It is a deep cave under a hill having a pool of cold water and according to mythology Lord Rama during his exile spent some time at this place.",
-    moreInfo: "https://en.wikipedia.org/wiki/Jholla_Waterfall"
+    image: 
+
+"https://tinypic.host/images/2025/05/09/20211126_1
+
+24641-min.jpg",
+    description: "It is a deep cave under a hill 
+
+having a pool of cold water and according to 
+
+mythology Lord Rama during his exile spent some 
+
+time at this place.",
+    moreInfo: 
+
+"https://en.wikipedia.org/wiki/Jholla_Waterfall"
   },
  {
     name: "Mahi Bajaj Sagar",
     lat: 23.63020278,
     lng: 74.54399167,
     category: "nature",
-    image: "https://tinypic.host/images/2025/05/12/Mahi-Bajaj-Sagar-Dam.Situated-16-kilometres-from-Banswara-town-in-Banswara-district-Rajasthan-India.-Th...en-1972-and-1983-for-the-purposes-of-hydroelectric-power-generation-and-water-supply.-It-is-th.jpg",
-    description: "It is the second largest dam in Rajasthan and the first major hydroelectric poerb project in the entire Vagad region. It is built on the Mahi river located about 16 kms east of Banswara city. This site of Engineering excellence is visited by many people.",
-    moreInfo: "https://en.wikipedia.org/wiki/Jagmer"
+    image: 
+
+"https://tinypic.host/images/2025/05/12/Mahi-
+
+Bajaj-Sagar-Dam.Situated-16-kilometres-from-
+
+Banswara-town-in-Banswara-district-Rajasthan-
+
+India.-Th...en-1972-and-1983-for-the-purposes-of-
+
+hydroelectric-power-generation-and-water-supply.-
+
+It-is-th.jpg",
+    description: "It is the second largest dam in 
+
+Rajasthan and the first major hydroelectric poerb 
+
+project in the entire Vagad region. It is built on 
+
+the Mahi river located about 16 kms east of 
+
+Banswara city. This site of Engineering excellence 
+
+is visited by many people.",
+    moreInfo: 
+
+"https://en.wikipedia.org/wiki/Jagmer"
   },
   {
     name: "Jagmer",
     lat: 23.65696944,
     lng: 74.45761944,
     category: "nature",
-    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/Historical_Fort.jpg/640px-Historical_Fort.jpg",
-    description: "Jagmer is the destination which is recently added into the catalogue of Ecotourism directory of Banswara. This beautiful place is blessede with hills & valleys. On the top there is temple and from there the view is sublime.",
-    moreInfo: "https://en.wikipedia.org/wiki/Jagmer"
+    image: 
+
+"https://upload.wikimedia.org/wikipedia/commons/th
+
+umb/f/f4/Historical_Fort.jpg/640px-
+
+Historical_Fort.jpg",
+    description: "Jagmer is the destination which 
+
+is recently added into the catalogue of Ecotourism 
+
+directory of Banswara. This beautiful place is 
+
+blessede with hills & valleys. On the top there is 
+
+temple and from there the view is sublime.",
+    moreInfo: 
+
+"https://en.wikipedia.org/wiki/Jagmer"
   }
 ];
 
 const religiousIcon = L.icon({
-  iconUrl: 'https://cdn-icons-png.flaticon.com/512/3448/3448440.png',
+  iconUrl: 'https://cdn-icons-
+
+png.flaticon.com/512/3448/3448440.png',
   iconSize: [28, 28],
   iconAnchor: [14, 28],
   popupAnchor: [0, -28]
 });
 
 const natureIcon = L.icon({
-  iconUrl: 'https://tinypic.host/images/2025/05/03/icons8-heaven-96.png',
+  iconUrl: 
+
+'https://tinypic.host/images/2025/05/03/icons8-
+
+heaven-96.png',
   iconSize: [28, 28],
   iconAnchor: [14, 28],
   popupAnchor: [0, -28]
 });
 
 const historicalIcon = L.icon({
-  iconUrl: 'https://static.arcgis.com/icons/places/Historical_15.svg',
+  iconUrl: 
+
+'https://static.arcgis.com/icons/places/Historical
+
+_15.svg',
   iconSize: [28, 28],
   iconAnchor: [14, 28],
   popupAnchor: [0, -28]
@@ -926,24 +1554,62 @@ const historicalLayer = L.layerGroup().addTo(map);
 
 locations.forEach(loc => {
  const popupHtml = `
-  <div style="font-family: sans-serif; color: #333; max-height: 400px; overflow-y: auto; overflow-x: auto; padding: 10px;">
-    <h2 style="font-size: 1.5em; color: #007bff;"><strong>${loc.name}</strong></h2>
-    <img src="${loc.image}" alt="${loc.name}" style="width:100%;max-height:150px;object-fit:cover;border-radius:8px;"><br><br>    
+  <div style="font-family: sans-serif; color: 
+
+#333; max-height: 400px; overflow-y: auto; 
+
+overflow-x: auto; padding: 10px;">
+    <h2 style="font-size: 1.5em; color: 
+
+#007bff;"><strong>${loc.name}</strong></h2>
+    <img src="${loc.image}" alt="${loc.name}" 
+
+style="width:100%;max-height:150px;object-
+
+fit:cover;border-radius:8px;"><br><br>    
     <h3>Description:</h3>
     <p>${loc.description}</p>
-    <p><a href="${loc.moreInfo}" target="_blank" style="color: #007bff;">More Info</a></p>
-    <p><a href="https://www.google.com/maps/search/?api=1&query=${loc.lat},${loc.lng}" target="_blank" style="color: #007bff;">Open in Google Maps</a></p>
-    <p><a href="https://www.google.com/maps/search/hotels/@${loc.lat},${loc.lng},15z" target="_blank" style="color: #28a745;">Nearby Hotels</a></p>
-    <p><a href="https://www.google.com/maps/search/restaurants/@${loc.lat},${loc.lng},15z" target="_blank" style="color: #dc3545;">Nearby Restaurants</a></p>
+    <p><a href="${loc.moreInfo}" target="_blank" 
+
+style="color: #007bff;">More Info</a></p>
+    <p><a 
+
+href="https://www.google.com/maps/search/?
+
+api=1&query=${loc.lat},${loc.lng}" target="_blank" 
+
+style="color: #007bff;">Open in Google 
+
+Maps</a></p>
+    <p><a 
+
+href="https://www.google.com/maps/search/hotels/@
+
+${loc.lat},${loc.lng},15z" target="_blank" 
+
+style="color: #28a745;">Nearby Hotels</a></p>
+    <p><a 
+
+href="https://www.google.com/maps/search/restauran
+
+ts/@${loc.lat},${loc.lng},15z" target="_blank" 
+
+style="color: #dc3545;">Nearby Restaurants</a></p>
   </div>
 `;
 
 
-  const icon = loc.category === 'religious' ? religiousIcon :
-               loc.category === 'nature' ? natureIcon :
+  const icon = loc.category === 'religious' ? 
+
+religiousIcon :
+               loc.category === 'nature' ? 
+
+natureIcon :
                historicalIcon;
 
-  const marker = L.marker([loc.lat, loc.lng], { icon }).bindPopup(popupHtml);
+  const marker = L.marker([loc.lat, loc.lng], { 
+
+icon }).bindPopup(popupHtml);
 
   if (loc.category === 'religious') {
     religiousLayer.addLayer(marker);
@@ -956,40 +1622,64 @@ locations.forEach(loc => {
 
 // Handle "Get Directions" links in popups
 map.on('popupopen', function (e) {
-  const link = e.popup._contentNode.querySelector('.get-directions');
+  const link = e.popup._contentNode.querySelector
+
+('.get-directions');
   if (!link) return;
 
   const destLat = link.getAttribute('data-lat');
   const destLng = link.getAttribute('data-lng');
 
   // Initialize the base URL
-  let url = `https://www.google.com/maps/dir/?api=1`;
+  let url = `https://www.google.com/maps/dir/?
 
-  console.log("Initial URL:", url); // Log before we append anything
+api=1`;
+
+  console.log("Initial URL:", url); // Log before 
+
+we append anything
 
   if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(pos => {
-      const origin = `${pos.coords.latitude},${pos.coords.longitude}`;
-      console.log("Origin:", origin); // Log the origin value
+    navigator.geolocation.getCurrentPosition(pos 
+
+=> {
+      const origin = `${pos.coords.latitude},
+
+${pos.coords.longitude}`;
+      console.log("Origin:", origin); // Log the 
+
+origin value
 
       // Append origin and destination to the URL
-      url += `&origin=${origin}&destination=${destLat},${destLng}`;
-      console.log("URL after geolocation:", url); // Log after appending origin and destination
+      url += `&origin=${origin}&destination=
+
+${destLat},${destLng}`;
+      console.log("URL after geolocation:", url); 
+
+// Log after appending origin and destination
 
       link.setAttribute('href', url);
       link.setAttribute('target', '_blank');
     }, () => {
-      console.log("Fallback URL due to geolocation error");
+      console.log("Fallback URL due to geolocation 
+
+error");
       url += `&destination=${destLat},${destLng}`;
-      console.log("URL in fallback:", url); // Log the fallback URL
+      console.log("URL in fallback:", url); // Log 
+
+the fallback URL
 
       link.setAttribute('href', url);
       link.setAttribute('target', '_blank');
     });
   } else {
-    console.log("Geolocation not supported, fallback URL");
+    console.log("Geolocation not supported, 
+
+fallback URL");
     url += `&destination=${destLat},${destLng}`;
-    console.log("URL in no geolocation:", url); // Log the no geolocation URL
+    console.log("URL in no geolocation:", url); // 
+
+Log the no geolocation URL
 
     link.setAttribute('href', url);
     link.setAttribute('target', '_blank');
@@ -998,27 +1688,65 @@ map.on('popupopen', function (e) {
 
 
 
-const filterControl = L.control({ position: 'topright' });
+const filterControl = L.control({ position: 
+
+'topright' });
 
 filterControl.onAdd = function () {
   const div = L.DomUtil.create('div', 'legend');
 
   div.innerHTML = `
-    <div id="filter-header" style="cursor: pointer; background: #f9f9f9; padding: 6px; border: 1px solid #ccc; border-radius: 4px;">
+    <div id="filter-header" style="cursor: 
+
+pointer; background: #f9f9f9; padding: 6px; 
+
+border: 1px solid #ccc; border-radius: 4px;">
       <strong>Filter Categories &#9660;</strong>
     </div>
-    <div id="filter-content" style="padding: 6px; border: 1px solid #ccc; border-top: none; border-radius: 0 0 4px 4px; background: white;">
+    <div id="filter-content" style="padding: 6px; 
+
+border: 1px solid #ccc; border-top: none; border-
+
+radius: 0 0 4px 4px; background: white;">
       <label>
-        <img src="https://cdn-icons-png.flaticon.com/512/3448/3448440.png" alt="Religious Icon" style="width: 20px; height: 20px; vertical-align: middle; margin-right: 5px;">
-        <input type="checkbox" checked id="religiousCB"> Religious
+        <img src="https://cdn-icons-
+
+png.flaticon.com/512/3448/3448440.png" 
+
+alt="Religious Icon" style="width: 20px; height: 
+
+20px; vertical-align: middle; margin-right: 5px;">
+        <input type="checkbox" checked 
+
+id="religiousCB"> Religious
       </label><br>
       <label>
-        <img src="https://tinypic.host/images/2025/05/03/icons8-heaven-96.png" alt="Nature Icon" style="width: 20px; height: 20px; vertical-align: middle; margin-right: 5px;">
-        <input type="checkbox" checked id="natureCB"> Nature
+        <img 
+
+src="https://tinypic.host/images/2025/05/03/icons8
+
+-heaven-96.png" alt="Nature Icon" style="width: 
+
+20px; height: 20px; vertical-align: middle; 
+
+margin-right: 5px;">
+        <input type="checkbox" checked 
+
+id="natureCB"> Nature
       </label><br>
       <label>
-        <img src="https://static.arcgis.com/icons/places/Historical_15.svg" alt="Historical Icon" style="width: 20px; height: 20px; vertical-align: middle; margin-right: 5px;">
-        <input type="checkbox" checked id="historicalCB"> Historical
+        <img 
+
+src="https://static.arcgis.com/icons/places/Histor
+
+ical_15.svg" alt="Historical Icon" style="width: 
+
+20px; height: 20px; vertical-align: middle; 
+
+margin-right: 5px;">
+        <input type="checkbox" checked 
+
+id="historicalCB"> Historical
       </label>
     </div>
   `;
@@ -1026,26 +1754,58 @@ filterControl.onAdd = function () {
   L.DomEvent.disableClickPropagation(div);
 
   // Toggle visibility
-  const header = div.querySelector('#filter-header');
-  const content = div.querySelector('#filter-content');
+  const header = div.querySelector('#filter-
+
+header');
+  const content = div.querySelector('#filter-
+
+content');
 
   header.addEventListener('click', () => {
-    const isVisible = content.style.display !== 'none';
-    content.style.display = isVisible ? 'none' : 'block';
-    header.querySelector('strong').innerHTML = `Filter SAFAR ${isVisible ? '&#9654;' : '&#9660;'}`;
+    const isVisible = content.style.display !== 
+
+'none';
+    content.style.display = isVisible ? 'none' : 
+
+'block';
+    header.querySelector('strong').innerHTML = 
+
+`Filter SAFAR ${isVisible ? '&#9654;' : 
+
+'&#9660;'}`;
   });
 
   // Checkbox functionality
-  div.querySelector('#religiousCB').addEventListener('change', (e) => {
-    e.target.checked ? map.addLayer(religiousLayer) : map.removeLayer(religiousLayer);
+  div.querySelector
+
+('#religiousCB').addEventListener('change', (e) => 
+
+{
+    e.target.checked ? map.addLayer
+
+(religiousLayer) : map.removeLayer
+
+(religiousLayer);
   });
 
-  div.querySelector('#natureCB').addEventListener('change', (e) => {
-    e.target.checked ? map.addLayer(natureLayer) : map.removeLayer(natureLayer);
+  div.querySelector('#natureCB').addEventListener
+
+('change', (e) => {
+    e.target.checked ? map.addLayer(natureLayer) : 
+
+map.removeLayer(natureLayer);
   });
 
-  div.querySelector('#historicalCB').addEventListener('change', (e) => {
-    e.target.checked ? map.addLayer(historicalLayer) : map.removeLayer(historicalLayer);
+  div.querySelector
+
+('#historicalCB').addEventListener('change', (e) 
+
+=> {
+    e.target.checked ? map.addLayer
+
+(historicalLayer) : map.removeLayer
+
+(historicalLayer);
   });
 
   return div;
@@ -1055,8 +1815,12 @@ filterControl.addTo(map);
 
 
 
-// Replace this with your actual OpenWeatherMap API key
-    var apiKey = "4200fd9e8f75bb4b3d866dc03f596781";
+// Replace this with your actual OpenWeatherMap 
+
+API key
+    var apiKey = 
+
+"4200fd9e8f75bb4b3d866dc03f596781";
 
     // When the user clicks on the map...
     map.on('click', function(e) {
@@ -1064,33 +1828,63 @@ filterControl.addTo(map);
       var lon = e.latlng.lng;
 
       // Build the OpenWeatherMap API request URL
-      // The units=metric parameter returns temperatures in Celsius.
-      var url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
+      // The units=metric parameter returns 
 
-      // Fetch weather data for the clicked location
+temperatures in Celsius.
+      var url = 
+
+`https://api.openweathermap.org/data/2.5/weather?
+
+lat=${lat}&lon=${lon}&appid=${apiKey}
+
+&units=metric`;
+
+      // Fetch weather data for the clicked 
+
+location
       fetch(url)
         .then(response => response.json())
         .then(data => {
-          // Extract temperature and weather description
-          var temperature = data.main ? data.main.temp : 'N/A';
-          var description = data.weather && data.weather.length ? data.weather[0].description : 'No description';
+          // Extract temperature and weather 
 
-          // Create and open a popup with the temperature information
+description
+          var temperature = data.main ? 
+
+data.main.temp : 'N/A';
+          var description = data.weather && 
+
+data.weather.length ? data.weather[0].description 
+
+: 'No description';
+
+          // Create and open a popup with the 
+
+temperature information
           L.popup()
             .setLatLng(e.latlng)
-            .setContent(`<b>Temperature:</b> ${temperature}&deg;C<br/><b>Weather:</b> ${description}`)
+            .setContent(`<b>Temperature:</b> 
+
+${temperature}&deg;C<br/><b>Weather:</b> 
+
+${description}`)
             .openOn(map);
         })
         .catch(error => {
-          console.error('Error fetching weather data:', error);
+          console.error('Error fetching weather 
+
+data:', error);
           L.popup()
             .setLatLng(e.latlng)
-            .setContent("Could not retrieve weather data.")
+            .setContent("Could not retrieve 
+
+weather data.")
             .openOn(map);
         });
     });
 
-  // ?? Embedded GeoJSON (replace this with your real geometry)
+  // ?? Embedded GeoJSON (replace this with your 
+
+real geometry)
   var districtGeoJSON = {
   "type": "FeatureCollection",
   "features": [
@@ -16871,56 +17665,106 @@ filterControl.addTo(map);
     new google.translate.TranslateElement({
       pageLanguage: 'en',
       includedLanguages: 'en,hi',
-      layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+      layout: 
+
+google.translate.TranslateElement.InlineLayout.SIM
+
+PLE
     }, 'google_translate_element');
   }
 </script>
 <script type="text/javascript"
-  src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit">
+  
+
+src="https://translate.google.com/translate_a/elem
+
+ent.js?cb=googleTranslateElementInit">
 </script>
 
 </body>
 </html>
 
 ipt"
-  src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit">
+  
+
+src="https://translate.google.com/translate_a/elem
+
+ent.js?cb=googleTranslateElementInit">
 </script>
 <script type="text/javascript">
   function googleTranslateElementInit() {
-    new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
+    new google.translate.TranslateElement
+
+({pageLanguage: 'en'}, 
+
+'google_translate_element');
   }
 
-  document.querySelector('#globe-translate i').addEventListener('click', function() {
-    const translateElement = document.getElementById('google_translate_element');
-    translateElement.style.display = translateElement.style.display === 'none' ? 'block' : 'none';
+  document.querySelector('#globe-translate 
+
+i').addEventListener('click', function() {
+    const translateElement = 
+
+document.getElementById
+
+('google_translate_element');
+    translateElement.style.display = 
+
+translateElement.style.display === 'none' ? 
+
+'block' : 'none';
   });
 </script>
 
-<script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+<script 
+
+src="//translate.google.com/translate_a/element.js
+
+?cb=googleTranslateElementInit"></script>
 
 <script type="text/javascript">
   function googleTranslateElementInit() {
-    new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
+    new google.translate.TranslateElement
+
+({pageLanguage: 'en'}, 
+
+'google_translate_element');
   }
 
-  document.addEventListener('DOMContentLoaded', function () {
-    const globeIcon = document.getElementById('globe-icon');
-    const popup = document.getElementById('translate-popup');
+  document.addEventListener('DOMContentLoaded', 
+
+function () {
+    const globeIcon = document.getElementById
+
+('globe-icon');
+    const popup = document.getElementById
+
+('translate-popup');
 
     globeIcon.addEventListener('click', () => {
-      popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
+      popup.style.display = popup.style.display 
+
+=== 'block' ? 'none' : 'block';
     });
 
     // Optional: Hide popup when clicking outside
-    document.addEventListener('click', function (e) {
-      if (!document.getElementById('globe-popup-container').contains(e.target)) {
+    document.addEventListener('click', function 
+
+(e) {
+      if (!document.getElementById('globe-popup-
+
+container').contains(e.target)) {
         popup.style.display = 'none';
       }
     });
   });
 </script>
 
-<script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+<script 
+
+src="//translate.google.com/translate_a/element.js
+
+?cb=googleTranslateElementInit"></script>
 
 
 </body>
