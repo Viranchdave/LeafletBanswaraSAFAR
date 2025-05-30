@@ -40,34 +40,7 @@
       font-family: Arial, sans-serif;
     }
 
-/* Default styles for Leaflet's built-in controls (e.g., zoom, locate) on larger screens */
-.leaflet-top.leaflet-left {
-  position: absolute;
-  top: 55px;  /* Standard position from previous discussions. Adjust if your toggle button is higher/lower */
-  left: 20px;
-  z-index: 1001; /* Ensure these controls are on top */
-  display: flex; /* Make it a flex container to stack controls */
-  flex-direction: column; /* Stack zoom/locate controls vertically */
-  align-items: center; /* Center them horizontally */
-  /* Remove the 'gap' from here as it might cause issues if not all children are Leaflet controls */
-}
-
-/* #toggle-button (your filter button) */
-#toggle-button {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  z-index: 1001; /* Higher than map controls */
-  background: white;
-  padding: 8px 12px;
-  border-radius: 6px;
-  box-shadow: 0 0 8px rgba(0,0,0,0.3);
-  cursor: pointer;
-}
-
-/* Leaflet's built-in controls (zoom, locate) 
-
-container */
+/* Leaflet's built-in controls (zoom, locate) container */
 .leaflet-top.leaflet-left {
   position: absolute;
   top: 60px; /* Default desktop */
@@ -79,9 +52,7 @@ container */
   gap: 8px;
 }
 
-/* Globe popup container (positioned below Leaflet 
-
-controls) */
+/* Globe popup container (positioned below Leaflet controls) */
 #globe-popup-container {
   position: absolute;
   top: 185px;  /* Default desktop */
@@ -100,6 +71,11 @@ controls) */
   border-radius: 50%;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
   color: #333;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* Translate popup below globe icon */
@@ -127,28 +103,31 @@ controls) */
     padding: 6px 10px;
   }
 
-  /* Leaflet controls on mobile - shifted down and 
-
-right */
+  /* Leaflet controls on mobile - shifted down and right */
   .leaflet-top.leaflet-left {
     top: 70px;
     left: 30px;
-    gap: 8px;
+    gap: 12px; /* Increased gap for better spacing */
   }
 
-  /* Globe popup container on mobile - aligned 
+  /* Ensure locate and globe icon share consistent size */
+  .leaflet-control-zoom,
+  .leaflet-control-locate {
+    width: 40px;
+    height: 40px;
+  }
 
-with Leaflet controls */
+  /* Globe popup container on mobile - aligned with Leaflet controls */
   #globe-popup-container {
-    top: 195px; /* Adjusted based on new control 
-
-position */
+    top: 200px; /* Adjusted to align below locate button */
     left: 40px;
   }
 
   #globe-icon {
     font-size: 22px;
     padding: 4px;
+    width: 40px;
+    height: 40px;
   }
 
   #translate-popup {
@@ -167,26 +146,29 @@ position */
     padding: 5px 8px;
   }
 
-  /* Leaflet controls on very small screens - 
-
-slightly less shifted */
+  /* Leaflet controls on very small screens - slightly less shifted */
   .leaflet-top.leaflet-left {
     top: 65px;
     left: 24px;
-    gap: 6px;
+    gap: 12px; /* Maintain spacing */
   }
 
-  /* Globe popup container on very small screens 
+  .leaflet-control-zoom,
+  .leaflet-control-locate {
+    width: 36px;
+    height: 36px;
+  }
 
-*/
   #globe-popup-container {
-    top: 185px;
+    top: 190px;
     left: 34px;
   }
 
   #globe-icon {
     font-size: 20px;
     padding: 3px;
+    width: 36px;
+    height: 36px;
   }
 
   #translate-popup {
