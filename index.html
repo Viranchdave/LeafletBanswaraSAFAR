@@ -17,10 +17,13 @@
 <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.min.js"></script>
 
   <style>
-    html, body {
-      height: 100%;
-      margin: 0;
-    }
+    html, body, #map {
+  height: 100% !important;
+  width: 100% !important;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
 
     #map {
       height: 100%;
