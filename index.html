@@ -40,26 +40,56 @@
       font-family: Arial, sans-serif;
     }
 
-.leaflet-top.leaflet-left {position: absolute !important;
-  top: 430vh;              /* Keeps it slightly down from the top */
-  left: 92.2vw;              /* Move to the center */
+/* Default styles for Leaflet's built-in controls (e.g., zoom, locate) on larger screens */
+.leaflet-top.leaflet-left {
+  position: absolute;
+  top: 44px;  /* Standard position from previous discussions. Adjust if your toggle button is higher/lower */
+  left: 10px;
+  z-index: 1001; /* Ensure these controls are on top */
+  display: flex; /* Make it a flex container to stack controls */
+  flex-direction: column; /* Stack zoom/locate controls vertically */
+  align-items: center; /* Center them horizontally */
+  /* Remove the 'gap' from here as it might cause issues if not all children are Leaflet controls */
+}
+
+/* #toggle-button (your filter button) */
+#toggle-button {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 1001; /* Higher than map controls */
+  background: white;
+  padding: 8px 12px;
+  border-radius: 6px;
+  box-shadow: 0 0 8px rgba(0,0,0,0.3);
+  cursor: pointer;
+}
+
+/* Leaflet's built-in controls (zoom, locate) container */
+.leaflet-top.leaflet-left {
+  position: absolute;
+  top: 60px; /* Position below #toggle-button (10px top + ~40px height of #toggle-button + 10px gap) */
+  left: 10px; /* Align with #toggle-button */
   z-index: 1001;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
+  flex-direction: column; /* Stack controls vertically */
+  align-items: center; /* Center controls horizontally within their own area */
+  gap: 8px; /* Space between individual Leaflet controls (zoom in, zoom out, locate) */
+
 }
 
 /* Globe popup container (positioned below Leaflet controls) */
 #globe-popup-container {
   position: absolute;
-  top: 170px;  /* Default desktop */
-  left: 40px;
+  /* This 'top' value needs to be precise.
+     Calculate it as: (top of .leaflet-top.leaflet-left) + (height of .leaflet-top.leaflet-left) + desired_gap */
+  top: 185px; /* **Desktop estimate - Adjust using browser inspector!** */
+  left: 48px; /* Align with other top-left controls */
   z-index: 1001;
   right: auto;
   bottom: auto;
 }
-/* Globe icon styling */
+
 #globe-icon {
   font-size: 24px;
   cursor: pointer;
@@ -68,19 +98,13 @@
   border-radius: 50%;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
   color: #333;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
-/* Translate popup below globe icon */
 #translate-popup {
   display: none;
   position: absolute;
-  top: 40px;
-  left: 0;
+  top: 40px; /* Below globe icon itself */
+  left: 0;   /* Aligned with parent #globe-popup-container */
   background: white;
   padding: 6px;
   border-radius: 6px;
@@ -89,6 +113,110 @@
   max-width: 200px;
   box-sizing: border-box;
   z-index: 1002;
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+  /* #toggle-button on mobile */
+  #toggle-button {
+    top: 5px;
+    left: 5px;
+    padding: 6px 10px;
+  }
+
+  /* Leaflet controls on mobile */
+  .leaflet-top.leaflet-left {
+    top: 55px; /* Adjust based on new #toggle-button position + height + gap */
+    left: 5px;
+    gap: 8px; /* Slightly less gap on mobile */
+  }
+
+  /* Globe popup container on mobile */
+  #globe-popup-container {
+    /* **Mobile estimate - Adjust using browser inspector!** */
+    top: 185px; /* Calculate: (mobile .leaflet-top.leaflet-left top) + (mobile .leaflet-top.leaflet-left height) + desired_gap */
+    left: 3px;
+  }
+
+  #globe-icon {
+    font-size: 22px;
+    padding: 4px;
+  }
+
+  #translate-popup {
+    top: 35px;
+    width: 150px;
+    max-width: 70vw;
+    padding: 4px;
+  }
+}
+
+@media (max-width: 480px) {
+  /* #toggle-button on very small screens */
+  #toggle-button {
+    top: 3px;
+    left: 17px;
+    padding: 5px 8px;
+  }
+
+  /* Leaflet controls on very small screens */
+  .leaflet-top.leaflet-left {
+    top: 50px;
+    left: 17px;
+    gap: 4px;
+  }
+
+  /* Globe popup container on very small screens */
+  #globe-popup-container {
+    /* **Very small mobile estimate - Adjust using browser inspector!** */
+    top: 176px; /* Calculate: (very small mobile .leaflet-top.leaflet-left top) + (its height) + desired_gap */
+    left: 5px;
+  }
+
+  #globe-icon {
+    font-size: 20px;
+    padding: 3px;
+  }
+
+  #translate-popup {
+    top: 30px;
+    width: 120px;
+    max-width: 80vw;
+    padding: 3px;
+  }
+}
+    .legend {
+      background: white;
+      padding: 8px 14px;
+      font-size: 14px;
+      border-radius: 6px;
+      line-height: 1.4;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      font-family: Arial, sans-serif;
+      z-index: 9999;
+    }
+
+    .legend h4 {
+      margin: 0;
+      font-size: 16px;
+    }
+
+    .legend i {
+      width: 12px;
+      height: 12px;
+      display: inline-block;
+      margin-right: 6px;
+      border-radius: 50%;
+    }
+.leaflet-top.leaflet-left {
+  top: 44px;              /* Keeps it slightly down from the top */
+  left: 4.5%;              /* Move to the center */
+  transform: translateX(-50%); /* Center-align */
+  display: flex;
+  flex-direction: column; /* Stack buttons vertically */
+  align-items: center;    /* Optional: makes it neater */
+ width: 24px;
+    height: 24px;
 }
 
     .legend {
