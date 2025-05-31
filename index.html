@@ -52,15 +52,9 @@
   gap: 8px;
 }
 
-/* Globe popup container (positioned below Leaflet controls) */
-#globe-popup-container {
-  position: absolute;
-  top: 170px;  /* Default desktop */
-  left: 40px;
-  z-index: 1001;
-  right: auto;
-  bottom: auto;
-}
+.leaflet-top.leaflet-left {position: absolute !important;
+  top: 60px;              /* Keeps it slightly down from the top */
+  left: 4.2%;              /* Move to the center */
 
 /* Globe icon styling */
 #globe-icon {
@@ -94,91 +88,6 @@
   z-index: 1002;
 }
 
-/* Media Queries */
-@media (max-width: 768px) {
-  /* Toggle button on mobile */
-  #toggle-button {
-    top: 5px;
-    left: 5px;
-    padding: 6px 10px;
-  }
-
-  /* Leaflet controls on mobile - shifted down and right */
-  .leaflet-top.leaflet-left {
-    top: 200px;  /* Keeps it slightly down from the top */
-    left: 500px;  /* Move to the center */
-    gap: 15px; /* Increased gap for better spacing */
-  }
-
-  /* Ensure locate and globe icon share consistent size */
-  .leaflet-control-zoom,
-  .leaflet-control-locate {
-    width: 40px;
-    height: 40px;
-  }
-
-  /* Globe popup container on mobile - aligned with Leaflet controls */
-  #globe-popup-container {
-    top: 200px; /* Adjusted to align below locate button */
-    left: 35px;
-  }
-
-  #globe-icon {
-    font-size: 22px;
-    padding: 4px;
-    width: 40px;
-    height: 40px;
-  }
-
-  #translate-popup {
-    top: 35px;
-    width: 150px;
-    max-width: 70vw;
-    padding: 4px;
-  }
-}
-
-@media (max-width: 480px) {
-  /* Toggle button on very small screens */
-  #toggle-button {
-    top: 3px;
-    left: 17px;
-    padding: 5px 8px;
-  }
-
-  /* Leaflet controls on very small screens - slightly less shifted */
-  .leaflet-top.leaflet-left {
-    top: 200px;  /* Keeps it slightly down from the top */
-    left: 500px;  /* Move to the center */
-    gap: 15px; /* Maintain spacing */
-  }
-
-  .leaflet-control-zoom,
-  .leaflet-control-locate {
-    width: 36px;
-    height: 36px;
-  }
-
-  #globe-popup-container {
-    top: 200px;
-    left: 14px;
-  }
-
-  #globe-icon {
-    font-size: 20px;
-    padding: 3px;
-    width: 36px;
-    height: 36px;
-  }
-
-  #translate-popup {
-    top: 30px;
-    width: 120px;
-    max-width: 80vw;
-    padding: 3px;
-  }
-}
-}
     .legend {
       background: white;
       padding: 8px 14px;
