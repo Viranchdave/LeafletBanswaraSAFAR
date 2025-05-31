@@ -40,11 +40,9 @@
       font-family: Arial, sans-serif;
     }
 
-/* Leaflet's built-in controls (zoom, locate) container */
-.leaflet-top.leaflet-left {
-  position: absolute;
-  top: 100px; /* Default desktop */
-  left: 60px;  /* Move to the center */
+.leaflet-top.leaflet-left {position: absolute !important;
+  top: 60px;              /* Keeps it slightly down from the top */
+  left: 4.2%;              /* Move to the center */
   z-index: 1001;
   display: flex;
   flex-direction: column;
@@ -52,10 +50,15 @@
   gap: 8px;
 }
 
-.leaflet-top.leaflet-left {position: absolute !important;
-  top: 60px;              /* Keeps it slightly down from the top */
-  left: 4.2%;              /* Move to the center */
-
+/* Globe popup container (positioned below Leaflet controls) */
+#globe-popup-container {
+  position: absolute;
+  top: 170px;  /* Default desktop */
+  left: 40px;
+  z-index: 1001;
+  right: auto;
+  bottom: auto;
+}
 /* Globe icon styling */
 #globe-icon {
   font-size: 24px;
